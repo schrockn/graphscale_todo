@@ -1,0 +1,16 @@
+type TodoUser @generatePent {
+    id: ID!
+    name: String!
+}
+
+input CreateTodoUserInput {
+    name: String!
+}
+
+type Query {
+    todoUser(id: ID!): TodoUser @customPentMethod
+}
+
+type Mutation {
+    createTodoUser(input: CreateTodoUserInput!): TodoUser @customPentMethod
+}
