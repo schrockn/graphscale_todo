@@ -65,14 +65,14 @@ GraphQLQuery = GraphQLObjectType(
     name='Query',
     fields=lambda: {
         'todoUser': GraphQLField(
-            type=GraphQLTodoUser.type(),
+            type=GraphQLTodoUser,
             args={
                 'id': GraphQLArgument(type=req(GraphQLID)),
             },
             resolver=define_default_resolver('todo_user'),
         ),
         'todoItem': GraphQLField(
-            type=GraphQLTodoItem.type(),
+            type=GraphQLTodoItem,
             args={
                 'id': GraphQLArgument(type=req(GraphQLID)),
             },
@@ -85,16 +85,16 @@ GraphQLMutation = GraphQLObjectType(
     name='Mutation',
     fields=lambda: {
         'createTodoUser': GraphQLField(
-            type=GraphQLTodoUser.type(),
+            type=GraphQLTodoUser,
             args={
-                'input': GraphQLArgument(type=req(GraphQLCreateTodoUserInput.type())),
+                'input_obj': GraphQLArgument(type=req(GraphQLCreateTodoUserInput)),
             },
             resolver=define_default_resolver('create_todo_user'),
         ),
         'createTodoItem': GraphQLField(
-            type=GraphQLTodoItem.type(),
+            type=GraphQLTodoItem,
             args={
-                'input': GraphQLArgument(type=req(GraphQLCreateTodoItemInput.type())),
+                'input_obj': GraphQLArgument(type=req(GraphQLCreateTodoItemInput)),
             },
             resolver=define_default_resolver('create_todo_item'),
         ),

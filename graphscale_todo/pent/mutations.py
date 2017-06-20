@@ -20,9 +20,9 @@ class Mutation(generated.MutationGenerated):
 
 class CreateTodoUserInput(PentInput):
     def __init__(self, data):
-        super().__init__(self, data)
+        super().__init__(data)
 
 
 class CreateTodoItemInput(PentInput):
     def __init__(self, data):
-        super().__init__(self, data)
+        super().__init__(data)
