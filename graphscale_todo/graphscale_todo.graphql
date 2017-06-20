@@ -3,21 +3,27 @@ type TodoUser @pent(type_id: 100000) {
     name: String!
 }
 
-# type TodoItem @pent(type_id: 100001) {
-#     id: ID!
-#     text: String!
-# }
+type TodoItem @pent(type_id: 100001) {
+    id: ID!
+    text: String!
+}
 
 input CreateTodoUserInput @pentInput {
     name: String!
 }
 
+input CreateTodoItemInput @pentInput {
+    text: String!
+}
+
 type Query {
     # todoUser(id: ID!): TodoUser @readPent
     todoUser(id: ID!): TodoUser @custom
+    todoItem(id: ID!): TodoItem @custom
 }
 
 type Mutation {
     # todoUser(id: ID!): TodoUser @createPent
     createTodoUser(input: CreateTodoUserInput!): TodoUser @custom
+    createTodoItem(input: CreateTodoItemInput!): TodoItem @custom
 }

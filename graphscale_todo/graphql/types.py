@@ -47,6 +47,20 @@ GraphQLTodoUser = GraphQLObjectType(
     },
 )
 
+GraphQLTodoItem = GraphQLObjectType(
+    name='TodoItem',
+    fields=lambda: {
+        'id': GraphQLField(
+            type=req(GraphQLID),
+            resolver=define_default_resolver('obj_id'),
+        ),
+        'text': GraphQLField(
+            type=req(GraphQLString),
+            resolver=define_default_resolver('text'),
+        ),
+    },
+)
+
 GraphQLQuery = GraphQLObjectType(
     name='Query',
     fields=lambda: {
@@ -56,6 +70,13 @@ GraphQLQuery = GraphQLObjectType(
                 'id': GraphQLArgument(type=req(GraphQLID)),
             },
             resolver=define_default_resolver('todo_user'),
+        ),
+        'todoItem': GraphQLField(
+            type=GraphQLTodoItem.type(),
+            args={
+                'id': GraphQLArgument(type=req(GraphQLID)),
+            },
+            resolver=define_default_resolver('todo_item'),
         ),
     },
 )
@@ -70,6 +91,13 @@ GraphQLMutation = GraphQLObjectType(
             },
             resolver=define_default_resolver('create_todo_user'),
         ),
+        'createTodoItem': GraphQLField(
+            type=GraphQLTodoItem.type(),
+            args={
+                'input': GraphQLArgument(type=req(GraphQLCreateTodoItemInput.type())),
+            },
+            resolver=define_default_resolver('create_todo_item'),
+        ),
     },
 )
 
@@ -77,5 +105,12 @@ GraphQLCreateTodoUserInput = GraphQLInputObjectType(
     name='CreateTodoUserInput',
     fields=lambda: {
         'name': GraphQLInputObjectField(type=req(GraphQLString)),
+    },
+)
+
+GraphQLCreateTodoItemInput = GraphQLInputObjectType(
+    name='CreateTodoItemInput',
+    fields=lambda: {
+        'text': GraphQLInputObjectField(type=req(GraphQLString)),
     },
 )

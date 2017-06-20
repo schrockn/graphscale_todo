@@ -9,6 +9,15 @@ class TodoUserGenerated(Pent):
     def name(self):
         return self._data['name']
 
+class TodoItemGenerated(Pent):
+    @property
+    def obj_id(self):
+        return self._data['obj_id']
+
+    @property
+    def text(self):
+        return self._data['text']
+
 class QueryGenerated:
     pass
 
