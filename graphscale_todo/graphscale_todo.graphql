@@ -1,16 +1,18 @@
-type TodoUser @generatePent {
+type TodoUser @pent(type_id: 1000) {
     id: ID!
     name: String!
 }
 
-input CreateTodoUserInput {
+input CreateTodoUserInput @pentInput {
     name: String!
 }
 
 type Query {
+    # todoUser(id: ID!): TodoUser @readPent
     todoUser(id: ID!): TodoUser @customPentMethod
 }
 
 type Mutation {
+    # todoUser(id: ID!): TodoUser @createPent
     createTodoUser(input: CreateTodoUserInput!): TodoUser @customPentMethod
 }
