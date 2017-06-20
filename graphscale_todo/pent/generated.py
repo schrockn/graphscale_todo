@@ -1,6 +1,5 @@
 from graphscale.pent import Pent
 
-
 class TodoUserGenerated(Pent):
     @property
     def obj_id(self):
@@ -10,10 +9,9 @@ class TodoUserGenerated(Pent):
     def name(self):
         return self._data['name']
 
-
 class QueryGenerated:
     pass
 
-
 class MutationGenerated:
     pass
+

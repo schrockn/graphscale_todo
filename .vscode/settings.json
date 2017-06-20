@@ -1,4 +1,10 @@
 {
+    "python.unitTest.pyTestArgs": [
+        "test",
+        "-s"
+    ],
+    "python.unitTest.pyTestEnabled": true,
+    "python.pythonPath": "python3",
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
     "python.formatting.provider": "yapf",

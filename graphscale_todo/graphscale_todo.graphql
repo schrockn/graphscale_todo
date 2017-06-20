@@ -1,7 +1,12 @@
-type TodoUser @pent(type_id: 1000) {
+type TodoUser @pent(type_id: 100000) {
     id: ID!
     name: String!
 }
+
+# type TodoItem @pent(type_id: 100001) {
+#     id: ID!
+#     text: String!
+# }
 
 input CreateTodoUserInput @pentInput {
     name: String!
@@ -9,10 +14,10 @@ input CreateTodoUserInput @pentInput {
 
 type Query {
     # todoUser(id: ID!): TodoUser @readPent
-    todoUser(id: ID!): TodoUser @customPentMethod
+    todoUser(id: ID!): TodoUser @custom
 }
 
 type Mutation {
     # todoUser(id: ID!): TodoUser @createPent
-    createTodoUser(input: CreateTodoUserInput!): TodoUser @customPentMethod
+    createTodoUser(input: CreateTodoUserInput!): TodoUser @custom
 }
