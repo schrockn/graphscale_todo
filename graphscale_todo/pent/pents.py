@@ -5,7 +5,7 @@ from . import generated
 from .mutations import CreateTodoItemInput, CreateTodoUserInput
 
 
-class Query(generated.QueryGenerated):
+class Root(generated.QueryGenerated, generated.MutationGenerated):
     def __init__(self, context):
         self.context = context
 
