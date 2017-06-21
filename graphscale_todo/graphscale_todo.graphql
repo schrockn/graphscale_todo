@@ -1,10 +1,10 @@
 type TodoUser @pent(type_id: 100000) {
-    id: ID!
+    id: UUID!
     name: String!
 }
 
 type TodoItem @pent(type_id: 100001) {
-    id: ID!
+    id: UUID!
     text: String!
 }
 
@@ -18,8 +18,8 @@ input CreateTodoItemInput @pentInput {
 
 type Query {
     # todoUser(id: ID!): TodoUser @readPent
-    todoUser(id: ID!): TodoUser @custom
-    todoItem(id: ID!): TodoItem @custom
+    todoUser(id: UUID!): TodoUser @custom
+    todoItem(id: UUID!): TodoItem @custom
 }
 
 type Mutation {

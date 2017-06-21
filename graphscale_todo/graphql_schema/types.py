@@ -28,6 +28,7 @@ from graphscale.grapple import (
     list_of,
     define_top_level_getter,
     GraphQLDate,
+    GraphQLUUID,
     create_browse_field,
     define_create,
     define_default_resolver,
@@ -37,7 +38,7 @@ GraphQLTodoUser = GraphQLObjectType(
     name='TodoUser',
     fields=lambda: {
         'id': GraphQLField(
-            type=req(GraphQLID),
+            type=req(GraphQLUUID),
             resolver=define_default_resolver('obj_id'),
         ),
         'name': GraphQLField(
@@ -51,7 +52,7 @@ GraphQLTodoItem = GraphQLObjectType(
     name='TodoItem',
     fields=lambda: {
         'id': GraphQLField(
-            type=req(GraphQLID),
+            type=req(GraphQLUUID),
             resolver=define_default_resolver('obj_id'),
         ),
         'text': GraphQLField(
@@ -67,14 +68,14 @@ GraphQLQuery = GraphQLObjectType(
         'todoUser': GraphQLField(
             type=GraphQLTodoUser,
             args={
-                'id': GraphQLArgument(type=req(GraphQLID)),
+                'id': GraphQLArgument(type=req(GraphQLUUID)),
             },
             resolver=define_default_resolver('todo_user'),
         ),
         'todoItem': GraphQLField(
             type=GraphQLTodoItem,
             args={
-                'id': GraphQLArgument(type=req(GraphQLID)),
+                'id': GraphQLArgument(type=req(GraphQLUUID)),
             },
             resolver=define_default_resolver('todo_item'),
         ),

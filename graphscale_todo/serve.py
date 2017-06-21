@@ -1,13 +1,17 @@
 from flask import Flask
 from flask_graphql import GraphQLView
 from graphscale import check
-from graphscale.pent import PentContext
+from graphscale.pent import PentContext, PentLoader
 from graphscale_todo.pent import in_mem_context, Query
 from graphscale_todo.graphql_schema import schema
 
 
 def serve(context):
     check.param(context, PentContext, 'context')
+
+    def produce_context():
+        PentLoader.clear_instance()
+        return context
 
     app = Flask(__name__)
     app.add_url_rule(
@@ -16,7 +20,7 @@ def serve(context):
             'graphql',
             schema=schema(),
             graphiql=True,
-            context_factory=lambda: in_mem_context(),
+            context_factory=produce_context,
             root_value=Query(context),
         ),
     )
