@@ -16,7 +16,7 @@ def serve(context):
             'graphql',
             schema=schema(),
             graphiql=True,
-            context=context,
+            context_factory=lambda: in_mem_context(),
             root_value=Query(context),
         ),
     )
