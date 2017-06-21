@@ -1,9 +1,9 @@
 from graphscale.pent import PentConfig, PentContext, create_class_map
 from graphscale.kvetch import init_from_conn, init_in_memory
-from graphscale_todo.kvetch import kvetch_schema
-from . import pents, mutations
+from .kvetch import kvetch_schema
+from .pent import pents
 
-CLASS_MAP = create_class_map(pents, mutations)
+CLASS_MAP = create_class_map(pents, None)
 
 
 def pent_config():

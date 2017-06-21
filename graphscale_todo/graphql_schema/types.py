@@ -1,7 +1,7 @@
 #W0661: unused imports lint
 #C0301: line too long
 #C0103: disable invalid constant name
-#pylint: disable=W0611,C0301,#C0103
+#pylint: disable=W0611,C0301,C0103
 
 from graphql import (
     GraphQLSchema,

@@ -8,3 +8,4 @@ def generated_edges():
 
 def generated_indexes():
     return []
+

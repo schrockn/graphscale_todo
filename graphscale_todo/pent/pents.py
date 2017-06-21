@@ -18,11 +18,11 @@ class Root(generated.QueryGenerated, generated.MutationGenerated):
         return await TodoItem.gen(self.context, obj_id)
 
     async def create_todo_user(self, input_obj):
-        # check.param(input_obj, CreateTodoUserInput, 'input_obj')
+        check.dict_param(input_obj, 'input_obj')
         return await create_pent(self.context, TodoUser, CreateTodoUserInput(input_obj))
 
     async def create_todo_item(self, input_obj):
-        # check.param(input_obj, CreateTodoItemInput, 'input_obj')
+        check.dict_param(input_obj, 'input_obj')
         return await create_pent(self.context, TodoItem, CreateTodoItemInput(input_obj))
 
 
