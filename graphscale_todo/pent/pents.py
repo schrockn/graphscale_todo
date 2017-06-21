@@ -1,7 +1,8 @@
 from graphscale import check
+from graphscale.pent import create_pent
+
 from . import generated
 from .mutations import CreateTodoItemInput, CreateTodoUserInput
-from graphscale.pent import create_pent
 
 
 class Query(generated.QueryGenerated):

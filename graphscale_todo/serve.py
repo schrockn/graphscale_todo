@@ -3,7 +3,7 @@ from flask_graphql import GraphQLView
 from graphscale import check
 from graphscale.pent import PentContext, PentLoader
 from graphscale_todo.pent import in_mem_context, Query
-from graphscale_todo.graphql_schema import schema
+from graphscale_todo.graphql_schema import graphql_schema
 
 
 def serve(context):
@@ -18,7 +18,7 @@ def serve(context):
         '/graphql',
         view_func=GraphQLView.as_view(
             'graphql',
-            schema=schema(),
+            schema=graphql_schema(),
             graphiql=True,
             context_factory=produce_context,
             root_value=Query(context),
