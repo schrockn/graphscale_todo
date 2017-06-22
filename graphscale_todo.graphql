@@ -17,9 +17,8 @@ input CreateTodoItemInput @pentInput {
 }
 
 type Query {
-    # todoUser(id: ID!): TodoUser @readPent
-    todoUser(id: UUID!): TodoUser @custom
-    todoItem(id: UUID!): TodoItem @custom
+    todoUser(id: UUID!): TodoUser @readPent
+    todoItem(id: UUID!): TodoItem @readPent
 }
 
 type Mutation {

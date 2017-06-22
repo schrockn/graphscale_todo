@@ -70,14 +70,14 @@ GraphQLQuery = GraphQLObjectType(
             args={
                 'id': GraphQLArgument(type=req(GraphQLUUID)),
             },
-            resolver=define_default_resolver('todo_user'),
+            resolver=define_default_resolver('gen_todo_user'),
         ),
         'todoItem': GraphQLField(
             type=GraphQLTodoItem,
             args={
                 'id': GraphQLArgument(type=req(GraphQLUUID)),
             },
-            resolver=define_default_resolver('todo_item'),
+            resolver=define_default_resolver('gen_todo_item'),
         ),
     },
 )

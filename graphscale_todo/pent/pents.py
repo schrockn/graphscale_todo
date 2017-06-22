@@ -9,13 +9,10 @@ class Root(generated.QueryGenerated, generated.MutationGenerated):
     def __init__(self, context):
         self.context = context
 
-    async def todo_user(self, obj_id):
+    async def gen_todo_item(self, obj_id):
         check.uuid_param(obj_id, 'obj_id')
-        return await TodoUser.gen(self.context, obj_id)
-
-    async def todo_item(self, obj_id):
-        check.uuid_param(obj_id, 'obj_id')
-        return await TodoItem.gen(self.context, obj_id)
+        cls = self.context.cls_from_name('TodoItem')
+        return await cls.gen(self.context, obj_id)
 
     async def create_todo_user(self, input_obj):
         check.dict_param(input_obj, 'input_obj')

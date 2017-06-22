@@ -1,3 +1,4 @@
+from graphscale import check
 from graphscale.pent import Pent
 
 class TodoUserGenerated(Pent):
@@ -19,7 +20,16 @@ class TodoItemGenerated(Pent):
         return self._data['text']
 
 class QueryGenerated:
-    pass
+    async def gen_todo_user(self, obj_id):
+        check.uuid_param(obj_id, 'obj_id')
+        cls = self.context.cls_from_name('TodoUser')
+        return await cls.gen(self.context, obj_id)
+
+    async def gen_todo_item(self, obj_id):
+        check.uuid_param(obj_id, 'obj_id')
+        cls = self.context.cls_from_name('TodoItem')
+        return await cls.gen(self.context, obj_id)
+
 
 class MutationGenerated:
     pass
