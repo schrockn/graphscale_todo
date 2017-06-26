@@ -90,14 +90,14 @@ GraphQLMutation = GraphQLObjectType(
             args={
                 'data': GraphQLArgument(type=req(GraphQLCreateTodoUserInput)),
             },
-            resolver=define_default_resolver('create_todo_user'),
+            resolver=define_default_resolver('gen_create_todo_user'),
         ),
         'createTodoItem': GraphQLField(
             type=GraphQLTodoItem,
             args={
                 'data': GraphQLArgument(type=req(GraphQLCreateTodoItemInput)),
             },
-            resolver=define_default_resolver('create_todo_item'),
+            resolver=define_default_resolver('gen_create_todo_item'),
         ),
     },
 )

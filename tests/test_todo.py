@@ -99,7 +99,7 @@ async def test_create_todo_item():
     context = in_mem_context()
     root = Root(context)
     dataect = {'text': 'Test Item'}
-    out_todo_item = await root.create_todo_item(dataect)
+    out_todo_item = await root.gen_create_todo_item(dataect)
     assert isinstance(out_todo_item, TodoItem)
     assert out_todo_item.text == 'Test Item'
 

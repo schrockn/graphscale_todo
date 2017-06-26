@@ -1,4 +1,5 @@
 from graphscale import check
+from graphscale.grapple.graphql_impl import gen_create_pent_dynamic
 from graphscale.pent import Pent, create_pent, delete_pent, update_pent
 
 class TodoUserGenerated(Pent):
@@ -32,5 +33,12 @@ class QueryGenerated:
 
 
 class MutationGenerated:
-    pass
+    async def gen_create_todo_user(self, data):
+        check.dict_param(data, 'data')
+        return await gen_create_pent_dynamic(self.context, 'TodoUser', 'CreateTodoUserInput', data)
+
+    async def gen_create_todo_item(self, data):
+        check.dict_param(data, 'data')
+        return await gen_create_pent_dynamic(self.context, 'TodoItem', 'CreateTodoItemInput', data)
+
 
