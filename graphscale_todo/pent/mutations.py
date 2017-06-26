@@ -1,15 +1,16 @@
 from graphscale import check
-from . import generated
+from graphscale.pent import PentMutationData, create_pent
 
-from graphscale.pent import create_pent, PentInput
-from . import pents
-
-
-class CreateTodoUserInput(PentInput):
-    def __init__(self, data):
-        super().__init__(data)
+from . import generated, pents
 
 
-class CreateTodoItemInput(PentInput):
-    def __init__(self, data):
-        super().__init__(data)
+class CreateTodoUserData(PentMutationData):
+    @property
+    def name(self):
+        return self._data['name']
+
+
+class CreateTodoItemData(PentMutationData):
+    @property
+    def text(self):
+        return self._data['text']

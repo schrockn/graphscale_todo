@@ -8,11 +8,11 @@ type TodoItem @pent(type_id: 100001) {
     text: String!
 }
 
-input CreateTodoUserInput @pentInput {
+input CreateTodoUserData @pentMutationData {
     name: String!
 }
 
-input CreateTodoItemInput @pentInput {
+input CreateTodoItemData @pentMutationData {
     text: String!
 }
 
@@ -22,6 +22,6 @@ type Query {
 }
 
 type Mutation {
-    createTodoUser(data: CreateTodoUserInput!): TodoUser @createPent
-    createTodoItem(data: CreateTodoItemInput!): TodoItem @createPent
+    createTodoUser(data: CreateTodoUserData!): TodoUser @createPent
+    createTodoItem(data: CreateTodoItemData!): TodoItem @createPent
 }

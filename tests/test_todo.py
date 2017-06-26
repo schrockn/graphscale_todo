@@ -8,9 +8,7 @@ from graphscale.graphql_client import GraphQLArg, InProcessGraphQLClient
 from graphscale.test.utils import async_test_graphql
 from graphscale_todo.config import in_mem_context
 from graphscale_todo.graphql_schema import graphql_schema
-from graphscale_todo.pent import (
-    CreateTodoItemInput, CreateTodoUserInput, Root, TodoItem, TodoUser
-)
+from graphscale_todo.pent import (CreateTodoItemData, CreateTodoUserData, Root, TodoItem, TodoUser)
 
 pytestmark = pytest.mark.asyncio
 
@@ -29,7 +27,7 @@ class TodoGraphQLClient:
         check.dict_param(data, 'data')
         result = await self.graphql_client.gen_mutation(
             'createTodoUser(data: $data) { id name }',
-            GraphQLArg(name='data', arg_type='CreateTodoUserInput!', value=data)
+            GraphQLArg(name='data', arg_type='CreateTodoUserData!', value=data)
         )
         return result['createTodoUser']
 
@@ -37,7 +35,7 @@ class TodoGraphQLClient:
         check.dict_param(data, 'data')
         result = await self.graphql_client.gen_mutation(
             'createTodoItem(data: $data) { id text}',
-            GraphQLArg(name='data', arg_type='CreateTodoItemInput!', value=data)
+            GraphQLArg(name='data', arg_type='CreateTodoItemData!', value=data)
         )
         return result['createTodoItem']
 
@@ -56,15 +54,14 @@ class TodoGraphQLClient:
         return result['todoItem']
 
 
-def create_todo_client():
+def create_todo_mem_client():
     return TodoGraphQLClient(InProcessGraphQLClient(Root(in_mem_context()), graphql_schema()))
 
 
 async def test_create_todo_user():
-    context = in_mem_context()
-    root = Root(context)
-    dataect = {'name': 'Test Name'}
-    out_todo = await root.gen_create_todo_user(dataect)
+    root = Root(in_mem_context())
+    data = {'name': 'Test Name'}
+    out_todo = await root.gen_create_todo_user(data)
     assert isinstance(out_todo, TodoUser)
     assert out_todo.name == 'Test Name'
 
@@ -74,8 +71,10 @@ async def test_create_todo_user():
 
 
 async def test_create_todo_user_graphql():
-    client = create_todo_client()
-    create_result = await client.gen_create_todo_user({'name': 'Test Name'})
+    client = create_todo_mem_client()
+    create_result = await client.gen_create_todo_user({
+        'name': 'Test Name',
+    })
 
     assert isinstance(UUID(hex=create_result['id']), UUID)
     assert create_result['name'] == 'Test Name'
@@ -85,7 +84,7 @@ async def test_create_todo_user_graphql():
 
 
 async def test_create_todo_item_graphql():
-    client = create_todo_client()
+    client = create_todo_mem_client()
     create_result = await client.gen_create_todo_item({'text': 'Test Item'})
     new_id = UUID(hex=create_result['id'])
     assert create_result['text'] == 'Test Item'
@@ -96,10 +95,9 @@ async def test_create_todo_item_graphql():
 
 
 async def test_create_todo_item():
-    context = in_mem_context()
-    root = Root(context)
-    dataect = {'text': 'Test Item'}
-    out_todo_item = await root.gen_create_todo_item(dataect)
+    root = Root(in_mem_context())
+    data = {'text': 'Test Item'}
+    out_todo_item = await root.gen_create_todo_item(data)
     assert isinstance(out_todo_item, TodoItem)
     assert out_todo_item.text == 'Test Item'
 

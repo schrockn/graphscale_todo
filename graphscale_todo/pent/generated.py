@@ -21,6 +21,10 @@ class TodoItemGenerated(Pent):
         return self._data['text']
 
 class QueryGenerated:
+    @property
+    def context(self):
+        raise Exception('must implement in Root')
+
     async def gen_todo_user(self, obj_id):
         check.uuid_param(obj_id, 'obj_id')
         cls = self.context.cls_from_name('TodoUser')
@@ -33,12 +37,16 @@ class QueryGenerated:
 
 
 class MutationGenerated:
+    @property
+    def context(self):
+        raise Exception('must implement in Root')
+
     async def gen_create_todo_user(self, data):
         check.dict_param(data, 'data')
-        return await gen_create_pent_dynamic(self.context, 'TodoUser', 'CreateTodoUserInput', data)
+        return await gen_create_pent_dynamic(self.context, 'TodoUser', 'CreateTodoUserData', data)
 
     async def gen_create_todo_item(self, data):
         check.dict_param(data, 'data')
-        return await gen_create_pent_dynamic(self.context, 'TodoItem', 'CreateTodoItemInput', data)
+        return await gen_create_pent_dynamic(self.context, 'TodoItem', 'CreateTodoItemData', data)
 
 
