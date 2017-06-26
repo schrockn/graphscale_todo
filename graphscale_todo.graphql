@@ -22,7 +22,6 @@ type Query {
 }
 
 type Mutation {
-    # todoUser(id: ID!): TodoUser @createPent
-    createTodoUser(input_obj: CreateTodoUserInput!): TodoUser @custom
-    createTodoItem(input_obj: CreateTodoItemInput!): TodoItem @custom
+    createTodoUser(data: CreateTodoUserInput!): TodoUser @custom
+    createTodoItem(data: CreateTodoItemInput!): TodoItem @custom
 }

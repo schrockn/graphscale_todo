@@ -1,5 +1,5 @@
 from graphscale import check
-from graphscale.pent import Pent
+from graphscale.pent import Pent, create_pent, delete_pent, update_pent
 
 class TodoUserGenerated(Pent):
     @property

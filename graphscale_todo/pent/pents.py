@@ -1,26 +1,23 @@
-from graphscale import check
-from graphscale.pent import create_pent
+from graphscale.grapple.graphql_impl import gen_create_pent_dynamic
 
 from . import generated
-from .mutations import CreateTodoItemInput, CreateTodoUserInput
 
 
 class Root(generated.QueryGenerated, generated.MutationGenerated):
     def __init__(self, context):
         self.context = context
 
-    async def gen_todo_item(self, obj_id):
-        check.uuid_param(obj_id, 'obj_id')
-        cls = self.context.cls_from_name('TodoItem')
-        return await cls.gen(self.context, obj_id)
+    async def create_todo_user(self, data):
+        return await self.gen_create_todo_user(data)
 
-    async def create_todo_user(self, input_obj):
-        check.dict_param(input_obj, 'input_obj')
-        return await create_pent(self.context, TodoUser, CreateTodoUserInput(input_obj))
+    async def gen_create_todo_user(self, data):
+        return await gen_create_pent_dynamic(self.context, 'TodoUser', 'CreateTodoUserInput', data)
 
-    async def create_todo_item(self, input_obj):
-        check.dict_param(input_obj, 'input_obj')
-        return await create_pent(self.context, TodoItem, CreateTodoItemInput(input_obj))
+    async def create_todo_item(self, data):
+        return await self.gen_create_todo_item(data)
+
+    async def gen_create_todo_item(self, data):
+        return await gen_create_pent_dynamic(self.context, 'TodoItem', 'CreateTodoItemInput', data)
 
 
 class TodoUser(generated.TodoUserGenerated):

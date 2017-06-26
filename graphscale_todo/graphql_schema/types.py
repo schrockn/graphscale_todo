@@ -88,14 +88,14 @@ GraphQLMutation = GraphQLObjectType(
         'createTodoUser': GraphQLField(
             type=GraphQLTodoUser,
             args={
-                'input_obj': GraphQLArgument(type=req(GraphQLCreateTodoUserInput)),
+                'data': GraphQLArgument(type=req(GraphQLCreateTodoUserInput)),
             },
             resolver=define_default_resolver('create_todo_user'),
         ),
         'createTodoItem': GraphQLField(
             type=GraphQLTodoItem,
             args={
-                'input_obj': GraphQLArgument(type=req(GraphQLCreateTodoItemInput)),
+                'data': GraphQLArgument(type=req(GraphQLCreateTodoItemInput)),
             },
             resolver=define_default_resolver('create_todo_item'),
         ),
