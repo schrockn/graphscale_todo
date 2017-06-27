@@ -13,17 +13,13 @@ class QueryGenerated:
         raise Exception('must implement in Root')
 
     async def gen_todo_user(self, obj_id):
-        check.uuid_param(obj_id, 'obj_id')
-        cls = self.context.cls_from_name('TodoUser')
-        return await cls.gen(self.context, obj_id)
+        return await gen_pent_dynamic(self.context, 'TodoUser', obj_id)
 
     async def gen_all_todo_users(self, first, after=None):
         return await gen_browse_pents_dynamic(self.context, after, first, 'TodoUser')
 
     async def gen_todo_item(self, obj_id):
-        check.uuid_param(obj_id, 'obj_id')
-        cls = self.context.cls_from_name('TodoItem')
-        return await cls.gen(self.context, obj_id)
+        return await gen_pent_dynamic(self.context, 'TodoItem', obj_id)
 
     async def gen_all_todo_items(self, first, after=None):
         return await gen_browse_pents_dynamic(self.context, after, first, 'TodoItem')
