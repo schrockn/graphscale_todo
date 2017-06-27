@@ -111,6 +111,13 @@ GraphQLMutation = GraphQLObjectType(
             },
             resolver=define_pent_mutation_resolver('gen_create_todo_item', 'CreateTodoItemData'),
         ),
+        'deleteTodoItem': GraphQLField(
+            type=GraphQLTodoItem,
+            args={
+                'id': GraphQLArgument(type=req(GraphQLUUID)),
+            },
+            resolver=define_default_resolver('gen_delete_todo_item'),
+        ),
     },
 )
 

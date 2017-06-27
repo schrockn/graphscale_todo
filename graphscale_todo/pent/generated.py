@@ -33,6 +33,10 @@ class MutationGenerated:
     async def gen_create_todo_item(self, data):
         return await gen_create_pent_dynamic(self.context, 'TodoItem', 'CreateTodoItemData', data)
 
+    async def gen_delete_todo_item(self, obj_id):
+        check.uuid_param(obj_id, 'obj_id')
+        return await gen_delete_pent_dynamic(self.context, 'TodoItem', obj_id)
+
 
 class TodoUserGenerated(Pent):
     @property
