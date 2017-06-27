@@ -102,7 +102,19 @@ class TodoGraphQLClient:
     async def gen_todo_item(self, obj_id):
         check.uuid_param(obj_id, 'obj_id')
         result = await self.graphql_client.gen_query(
-            'todoItem(id: $id) { id text }', GraphQLArg(name='id', arg_type='UUID!', value=obj_id)
+            """
+            todoItem(id: $id) {
+                id
+                text
+                list {
+                    id
+                    name
+                    owner {
+                        id
+                        name
+                    }
+                }
+            }""", GraphQLArg(name='id', arg_type='UUID!', value=obj_id)
         )
         return result['todoItem']
 
@@ -263,21 +275,25 @@ async def test_create_user_list_graphql():
 
 async def test_create_todo_item_graphql():
     client = create_todo_mem_client()
-    create_result = await client.gen_create_todo_item({'text': 'Test Item'})
-    new_id = UUID(hex=create_result['id'])
-    assert create_result['text'] == 'Test Item'
+    create_user_result = await client.gen_create_todo_user(
+        {
+            'name': 'User one',
+            'username': 'test_create_todo_item_graphql_user'
+        }
+    )
 
-    gen_result = await client.gen_todo_item(new_id)
-    assert gen_result['id'] == str(new_id)
-    assert gen_result['text'] == 'Test Item'
+    user_id = UUID(hex=create_user_result['id'])
 
+    create_list_result = await client.gen_create_todo_list({'name': 'List one', 'ownerId': user_id})
 
-async def test_create_todo_item():
-    root = Root(in_mem_context())
-    out_todo_item = await root.gen_create_todo_item(CreateTodoItemData(text='Test Item'))
-    assert isinstance(out_todo_item, TodoItem)
-    assert out_todo_item.text == 'Test Item'
+    list_id = UUID(hex=create_list_result['id'])
 
-    todo_item = await root.gen_todo_item(out_todo_item.obj_id)
-    assert isinstance(todo_item, TodoItem)
-    assert todo_item.text == 'Test Item'
+    create_item_result = await client.gen_create_todo_item({'text': 'Item one', 'listId': list_id})
+
+    item_id = UUID(hex=create_item_result['id'])
+
+    gen_result = await client.gen_todo_item(item_id)
+    assert gen_result['id'] == str(item_id)
+    assert gen_result['text'] == 'Item one'
+    assert gen_result['list']['name'] == 'List one'
+    assert gen_result['list']['owner']['name'] == 'User one'

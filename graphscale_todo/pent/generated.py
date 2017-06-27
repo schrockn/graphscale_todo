@@ -83,6 +83,9 @@ class TodoListGenerated(Pent):
     async def gen_owner(self):
         return await self.gen_from_stored_id_dynamic('TodoUser', 'owner_id')
 
+    async def gen_todo_items(self, first, after=None):
+        return await self.gen_associated_pents_dynamic('TodoItem', 'list_to_item_edge', after, first)
+
 class TodoItemGenerated(Pent):
     @property
     def obj_id(self):
@@ -91,6 +94,9 @@ class TodoItemGenerated(Pent):
     @property
     def text(self):
         return self._data['text']
+
+    async def gen_list(self):
+        return await self.gen_from_stored_id_dynamic('TodoList', 'list_id')
 
 class CreateTodoUserDataGenerated(PentMutationData):
     def __init__(self, *,
@@ -138,6 +144,7 @@ class UpdateTodoUserDataGenerated(PentMutationData):
 class CreateTodoItemDataGenerated(PentMutationData):
     def __init__(self, *,
         text,
+        list_id,
     ):
         self._data = locals()
         del self._data['self']
@@ -145,4 +152,8 @@ class CreateTodoItemDataGenerated(PentMutationData):
     @property
     def text(self):
         return self._data['text']
+
+    @property
+    def list_id(self):
+        return self._data['list_id']
 

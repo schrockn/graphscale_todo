@@ -2,12 +2,6 @@ type TodoUser @pent(type_id: 100000) {
     id: UUID!
     name: String!
     username: String!
-        #     define_edge(
-        #     edge_name='user_to_list_edge',
-        #     edge_id=192381923,
-        #     from_id_attr='owner_id',
-        # )
-    # todoLists(first: Int = 100, after: UUID): [TodoList!]! @customGen
     todoLists(first: Int = 100, after: UUID): [TodoList!]!
         @edgeToStoredId(edgeName: "user_to_list_edge", edgeId: 2039430, field: "owner")
 }
@@ -16,11 +10,14 @@ type TodoList @pent(type_id: 100002) {
     id: UUID!
     name: String!
     owner: TodoUser @genFromStoredId
+    todoItems(first: Int = 100, after: UUID): [TodoItem!]!
+        @edgeToStoredId(edgeName: "list_to_item_edge", edgeId: 83948934, field: "list")
 }
 
 type TodoItem @pent(type_id: 100001) {
     id: UUID!
     text: String!
+    list: TodoList @genFromStoredId
 }
 
 input CreateTodoUserData @pentMutationData {
@@ -39,6 +36,7 @@ input UpdateTodoUserData @pentMutationData {
 
 input CreateTodoItemData @pentMutationData {
     text: String!
+    listId: UUID!
 }
 
 type Query {
