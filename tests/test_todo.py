@@ -60,8 +60,7 @@ def create_todo_mem_client():
 
 async def test_create_todo_user():
     root = Root(in_mem_context())
-    data = {'name': 'Test Name'}
-    out_todo = await root.gen_create_todo_user(data)
+    out_todo = await root.gen_create_todo_user(CreateTodoUserData(name='Test Name'))
     assert isinstance(out_todo, TodoUser)
     assert out_todo.name == 'Test Name'
 
@@ -96,8 +95,7 @@ async def test_create_todo_item_graphql():
 
 async def test_create_todo_item():
     root = Root(in_mem_context())
-    data = {'text': 'Test Item'}
-    out_todo_item = await root.gen_create_todo_item(data)
+    out_todo_item = await root.gen_create_todo_item(CreateTodoItemData(text='Test Item'))
     assert isinstance(out_todo_item, TodoItem)
     assert out_todo_item.text == 'Test Item'
 

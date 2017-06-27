@@ -32,6 +32,7 @@ from graphscale.grapple import (
     create_browse_field,
     define_create,
     define_default_resolver,
+    define_pent_mutation_resolver,
 )
 
 GraphQLTodoUser = GraphQLObjectType(
@@ -90,14 +91,14 @@ GraphQLMutation = GraphQLObjectType(
             args={
                 'data': GraphQLArgument(type=req(GraphQLCreateTodoUserData)),
             },
-            resolver=define_default_resolver('gen_create_todo_user'),
+            resolver=define_pent_mutation_resolver('gen_create_todo_user', 'CreateTodoUserData'),
         ),
         'createTodoItem': GraphQLField(
             type=GraphQLTodoItem,
             args={
                 'data': GraphQLArgument(type=req(GraphQLCreateTodoItemData)),
             },
-            resolver=define_default_resolver('gen_create_todo_item'),
+            resolver=define_pent_mutation_resolver('gen_create_todo_item', 'CreateTodoItemData'),
         ),
     },
 )
