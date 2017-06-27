@@ -1,5 +1,5 @@
 from graphscale import check
-from graphscale.grapple.graphql_impl import gen_create_pent_dynamic, gen_delete_pent_dynamic
+from graphscale.grapple.graphql_impl import gen_create_pent_dynamic, gen_delete_pent_dynamic, gen_update_pent_dynamic
 from graphscale.pent import Pent, PentMutationData, create_pent, delete_pent, update_pent
 
 class QueryGenerated:
@@ -26,15 +26,16 @@ class MutationGenerated:
     async def gen_create_todo_user(self, data):
         return await gen_create_pent_dynamic(self.context, 'TodoUser', 'CreateTodoUserData', data)
 
+    async def gen_update_todo_user(self, obj_id, data):
+        return await gen_update_pent_dynamic(self.context, obj_id, 'TodoUser', 'UpdateTodoUserData', data)
+
     async def gen_delete_todo_user(self, obj_id):
-        check.uuid_param(obj_id, 'obj_id')
         return await gen_delete_pent_dynamic(self.context, 'TodoUser', obj_id)
 
     async def gen_create_todo_item(self, data):
         return await gen_create_pent_dynamic(self.context, 'TodoItem', 'CreateTodoItemData', data)
 
     async def gen_delete_todo_item(self, obj_id):
-        check.uuid_param(obj_id, 'obj_id')
         return await gen_delete_pent_dynamic(self.context, 'TodoItem', obj_id)
 
 
@@ -75,6 +76,17 @@ class CreateTodoUserDataGenerated(PentMutationData):
     @property
     def username(self):
         return self._data['username']
+
+class UpdateTodoUserDataGenerated(PentMutationData):
+    def __init__(self, *,
+        name=None,
+    ):
+        self._data = locals()
+        del self._data['self']
+
+    @property
+    def name(self):
+        return self._data.get('name')
 
 class CreateTodoItemDataGenerated(PentMutationData):
     def __init__(self, *,

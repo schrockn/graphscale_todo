@@ -97,6 +97,14 @@ GraphQLMutation = GraphQLObjectType(
             },
             resolver=define_pent_mutation_resolver('gen_create_todo_user', 'CreateTodoUserData'),
         ),
+        'updateTodoUser': GraphQLField(
+            type=GraphQLTodoUser,
+            args={
+                'id': GraphQLArgument(type=req(GraphQLUUID)),
+                'data': GraphQLArgument(type=req(GraphQLUpdateTodoUserData)),
+            },
+            resolver=define_pent_mutation_resolver('gen_update_todo_user', 'UpdateTodoUserData'),
+        ),
         'deleteTodoUser': GraphQLField(
             type=GraphQLTodoUser,
             args={
@@ -126,6 +134,13 @@ GraphQLCreateTodoUserData = GraphQLInputObjectType(
     fields=lambda: {
         'name': GraphQLInputObjectField(type=req(GraphQLString)),
         'username': GraphQLInputObjectField(type=req(GraphQLString)),
+    },
+)
+
+GraphQLUpdateTodoUserData = GraphQLInputObjectType(
+    name='UpdateTodoUserData',
+    fields=lambda: {
+        'name': GraphQLInputObjectField(type=GraphQLString),
     },
 )
 

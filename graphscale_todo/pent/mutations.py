@@ -8,5 +8,9 @@ class CreateTodoUserData(generated.CreateTodoUserDataGenerated):
     pass
 
 
+class UpdateTodoUserData(generated.UpdateTodoUserDataGenerated):
+    pass
+
+
 class CreateTodoItemData(generated.CreateTodoItemDataGenerated):
     pass
