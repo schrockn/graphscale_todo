@@ -1,5 +1,10 @@
 from graphscale import check
-from graphscale.grapple.graphql_impl import gen_create_pent_dynamic, gen_delete_pent_dynamic, gen_update_pent_dynamic
+from graphscale.grapple.graphql_impl import (
+    gen_create_pent_dynamic,
+    gen_delete_pent_dynamic,
+    gen_update_pent_dynamic,
+    gen_browse_pents_dynamic,
+)
 from graphscale.pent import Pent, PentMutationData, create_pent, delete_pent, update_pent
 
 class QueryGenerated:
@@ -11,6 +16,9 @@ class QueryGenerated:
         check.uuid_param(obj_id, 'obj_id')
         cls = self.context.cls_from_name('TodoUser')
         return await cls.gen(self.context, obj_id)
+
+    async def gen_all_todo_users(self, first, after=None):
+        return await gen_browse_pents_dynamic(self.context, after, first, 'TodoUser')
 
     async def gen_todo_item(self, obj_id):
         check.uuid_param(obj_id, 'obj_id')

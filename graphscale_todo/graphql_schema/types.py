@@ -77,6 +77,14 @@ GraphQLQuery = GraphQLObjectType(
             },
             resolver=define_default_resolver('gen_todo_user'),
         ),
+        'allTodoUsers': GraphQLField(
+            type=req(list_of(req(GraphQLTodoUser))),
+            args={
+                'first': GraphQLArgument(type=GraphQLInt, default_value=100),
+                'after': GraphQLArgument(type=GraphQLUUID),
+            },
+            resolver=define_default_resolver('gen_all_todo_users'),
+        ),
         'todoItem': GraphQLField(
             type=GraphQLTodoItem,
             args={

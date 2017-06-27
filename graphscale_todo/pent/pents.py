@@ -1,5 +1,5 @@
-# from graphscale import check
-# from graphscale.grapple.graphql_impl import gen_update_pent_dynamic
+from graphscale import check
+from graphscale.grapple.graphql_impl import gen_browse_pents_dynamic
 # from graphscale.pent import update_pent
 
 from . import generated

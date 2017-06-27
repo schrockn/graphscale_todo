@@ -24,6 +24,8 @@ input CreateTodoItemData @pentMutationData {
 
 type Query {
     todoUser(id: UUID!): TodoUser @readPent
+    allTodoUsers(first: Int = 100, after: UUID): [TodoUser!]! @browsePents
+
     todoItem(id: UUID!): TodoItem @readPent
 }
 
