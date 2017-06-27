@@ -26,15 +26,23 @@ class TodoGraphQLClient:
     async def gen_create_todo_user(self, data):
         check.dict_param(data, 'data')
         result = await self.graphql_client.gen_mutation(
-            'createTodoUser(data: $data) { id name }',
+            'createTodoUser(data: $data) { id name username }',
             GraphQLArg(name='data', arg_type='CreateTodoUserData!', value=data)
         )
         return result['createTodoUser']
 
+    async def gen_delete_todo_user(self, obj_id):
+        check.uuid_param(obj_id, 'obj_id')
+        result = await self.graphql_client.gen_mutation(
+            'deleteTodoUser(id: $id) { id name username }',
+            GraphQLArg(name='id', arg_type='UUID!', value=obj_id)
+        )
+        return result['deleteTodoUser']
+
     async def gen_create_todo_item(self, data):
         check.dict_param(data, 'data')
         result = await self.graphql_client.gen_mutation(
-            'createTodoItem(data: $data) { id text}',
+            'createTodoItem(data: $data) { id text }',
             GraphQLArg(name='data', arg_type='CreateTodoItemData!', value=data)
         )
         return result['createTodoItem']
@@ -42,7 +50,8 @@ class TodoGraphQLClient:
     async def gen_todo_user(self, obj_id):
         check.uuid_param(obj_id, 'obj_id')
         result = await self.graphql_client.gen_query(
-            'todoUser(id: $id) { id name }', GraphQLArg(name='id', arg_type='UUID!', value=obj_id)
+            'todoUser(id: $id) { id name username }',
+            GraphQLArg(name='id', arg_type='UUID!', value=obj_id)
         )
         return result['todoUser']
 
@@ -60,26 +69,41 @@ def create_todo_mem_client():
 
 async def test_create_todo_user():
     root = Root(in_mem_context())
-    out_todo = await root.gen_create_todo_user(CreateTodoUserData(name='Test Name'))
+    out_todo = await root.gen_create_todo_user(
+        CreateTodoUserData(name='Test Name', username='testname')
+    )
     assert isinstance(out_todo, TodoUser)
     assert out_todo.name == 'Test Name'
 
     todo = await root.gen_todo_user(out_todo.obj_id)
     assert isinstance(todo, TodoUser)
     assert todo.name == 'Test Name'
+    assert todo.username == 'testname'
+
+
+async def test_create_delete_todo_user():
+    client = create_todo_mem_client()
+    create_result = await client.gen_create_todo_user({'name': 'Test Name', 'username': 'testname'})
+    todo_id = UUID(hex=create_result['id'])
+
+    delete_result = await client.gen_delete_todo_user(todo_id)
+    assert delete_result['id'] == str(todo_id)
+
+    get_result = await client.gen_todo_user(todo_id)
+    assert not get_result
 
 
 async def test_create_todo_user_graphql():
     client = create_todo_mem_client()
-    create_result = await client.gen_create_todo_user({
-        'name': 'Test Name',
-    })
+    create_result = await client.gen_create_todo_user({'name': 'Test Name', 'username': 'testname'})
 
     assert isinstance(UUID(hex=create_result['id']), UUID)
     assert create_result['name'] == 'Test Name'
+    assert create_result['username'] == 'testname'
 
     get_result = await client.gen_todo_user(UUID(hex=create_result['id']))
     assert get_result['name'] == 'Test Name'
+    assert get_result['username'] == 'testname'
 
 
 async def test_create_todo_item_graphql():
