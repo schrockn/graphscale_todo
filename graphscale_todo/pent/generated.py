@@ -69,6 +69,9 @@ class TodoUserGenerated(Pent):
     def username(self):
         return self._data['username']
 
+    async def gen_todo_lists(self, first, after=None):
+        return await self.gen_associated_pents_dynamic('TodoList', 'user_to_list_edge', after, first)
+
 class TodoListGenerated(Pent):
     @property
     def obj_id(self):

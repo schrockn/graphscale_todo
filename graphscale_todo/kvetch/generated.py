@@ -8,7 +8,8 @@ def generated_objects():
     ]
 
 def generated_edges():
-    return []
+    return [
+    ]
 
 def generated_indexes():
     return []
