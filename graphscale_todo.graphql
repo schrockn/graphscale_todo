@@ -2,6 +2,13 @@ type TodoUser @pent(type_id: 100000) {
     id: UUID!
     name: String!
     username: String!
+    todoLists(first: Int = 100, after: UUID): [TodoList!]! @customGen
+}
+
+type TodoList @pent(type_id: 100002) {
+    id: UUID!
+    name: String!
+    owner: TodoUser @customGen
 }
 
 type TodoItem @pent(type_id: 100001) {
@@ -12,6 +19,11 @@ type TodoItem @pent(type_id: 100001) {
 input CreateTodoUserData @pentMutationData {
     name: String!
     username: String!
+}
+
+input CreateTodoListData @pentMutationData {
+    name: String!
+    ownerId: UUID!
 }
 
 input UpdateTodoUserData @pentMutationData {
@@ -34,6 +46,8 @@ type Mutation {
     createTodoUser(data: CreateTodoUserData!): TodoUser @createPent
     updateTodoUser(id: UUID!, data: UpdateTodoUserData!): TodoUser @updatePent
     deleteTodoUser(id: UUID!): TodoUser @deletePent
+
+    createTodoList(data: CreateTodoListData!): TodoList @createPent
 
     createTodoItem(data: CreateTodoItemData!): TodoItem @createPent
     deleteTodoItem(id: UUID!): TodoItem @deletePent

@@ -50,6 +50,32 @@ GraphQLTodoUser = GraphQLObjectType(
             type=req(GraphQLString),
             resolver=define_default_resolver('username'),
         ),
+        'todoLists': GraphQLField(
+            type=req(list_of(req(GraphQLTodoList))),
+            args={
+                'first': GraphQLArgument(type=GraphQLInt, default_value=100),
+                'after': GraphQLArgument(type=GraphQLUUID),
+            },
+            resolver=define_default_resolver('gen_todo_lists'),
+        ),
+    },
+)
+
+GraphQLTodoList = GraphQLObjectType(
+    name='TodoList',
+    fields=lambda: {
+        'id': GraphQLField(
+            type=req(GraphQLUUID),
+            resolver=define_default_resolver('obj_id'),
+        ),
+        'name': GraphQLField(
+            type=req(GraphQLString),
+            resolver=define_default_resolver('name'),
+        ),
+        'owner': GraphQLField(
+            type=GraphQLTodoUser,
+            resolver=define_default_resolver('gen_owner'),
+        ),
     },
 )
 
@@ -128,6 +154,13 @@ GraphQLMutation = GraphQLObjectType(
             },
             resolver=define_default_resolver('gen_delete_todo_user'),
         ),
+        'createTodoList': GraphQLField(
+            type=GraphQLTodoList,
+            args={
+                'data': GraphQLArgument(type=req(GraphQLCreateTodoListData)),
+            },
+            resolver=define_pent_mutation_resolver('gen_create_todo_list', 'CreateTodoListData'),
+        ),
         'createTodoItem': GraphQLField(
             type=GraphQLTodoItem,
             args={
@@ -150,6 +183,14 @@ GraphQLCreateTodoUserData = GraphQLInputObjectType(
     fields=lambda: {
         'name': GraphQLInputObjectField(type=req(GraphQLString)),
         'username': GraphQLInputObjectField(type=req(GraphQLString)),
+    },
+)
+
+GraphQLCreateTodoListData = GraphQLInputObjectType(
+    name='CreateTodoListData',
+    fields=lambda: {
+        'name': GraphQLInputObjectField(type=req(GraphQLString)),
+        'ownerId': GraphQLInputObjectField(type=req(GraphQLUUID)),
     },
 )
 

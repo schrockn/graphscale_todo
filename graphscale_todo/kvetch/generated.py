@@ -3,6 +3,7 @@ from graphscale.kvetch import define_object, define_edge, define_index
 def generated_objects():
     return [
         define_object(type_name='TodoUser', type_id=100000),
+        define_object(type_name='TodoList', type_id=100002),
         define_object(type_name='TodoItem', type_id=100001),
     ]
 

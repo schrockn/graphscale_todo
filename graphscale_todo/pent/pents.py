@@ -15,8 +15,14 @@ class Root(generated.QueryGenerated, generated.MutationGenerated):
 
 
 class TodoUser(generated.TodoUserGenerated):
-    pass
+    async def gen_todo_lists(self, after=None, first=100):
+        return await self.gen_associated_pents(TodoList, 'user_to_list_edge', after, first)
 
 
 class TodoItem(generated.TodoItemGenerated):
+    async def gen_owner(self):
+        return await TodoUser.gen(self.context, self._data['owner_id'])
+
+
+class TodoList(generated.TodoListGenerated):
     pass

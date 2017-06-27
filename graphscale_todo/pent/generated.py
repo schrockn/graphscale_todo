@@ -43,6 +43,9 @@ class MutationGenerated:
     async def gen_delete_todo_user(self, obj_id):
         return await gen_delete_pent_dynamic(self.context, 'TodoUser', obj_id)
 
+    async def gen_create_todo_list(self, data):
+        return await gen_create_pent_dynamic(self.context, 'TodoList', 'CreateTodoListData', data)
+
     async def gen_create_todo_item(self, data):
         return await gen_create_pent_dynamic(self.context, 'TodoItem', 'CreateTodoItemData', data)
 
@@ -62,6 +65,15 @@ class TodoUserGenerated(Pent):
     @property
     def username(self):
         return self._data['username']
+
+class TodoListGenerated(Pent):
+    @property
+    def obj_id(self):
+        return self._data['obj_id']
+
+    @property
+    def name(self):
+        return self._data['name']
 
 class TodoItemGenerated(Pent):
     @property
@@ -87,6 +99,22 @@ class CreateTodoUserDataGenerated(PentMutationData):
     @property
     def username(self):
         return self._data['username']
+
+class CreateTodoListDataGenerated(PentMutationData):
+    def __init__(self, *,
+        name,
+        owner_id,
+    ):
+        self._data = locals()
+        del self._data['self']
+
+    @property
+    def name(self):
+        return self._data['name']
+
+    @property
+    def owner_id(self):
+        return self._data['owner_id']
 
 class UpdateTodoUserDataGenerated(PentMutationData):
     def __init__(self, *,

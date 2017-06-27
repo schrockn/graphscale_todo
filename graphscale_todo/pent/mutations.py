@@ -14,3 +14,8 @@ class UpdateTodoUserData(generated.UpdateTodoUserDataGenerated):
 
 class CreateTodoItemData(generated.CreateTodoItemDataGenerated):
     pass
+
+
+class CreateTodoListData(generated.CreateTodoListDataGenerated):
+    pass
+
