@@ -65,6 +65,16 @@ class TodoGraphQLClient:
         )
         return result['todoUser']
 
+    async def gen_all_todo_users(self, first=100, after=None):
+        check.int_param(first, 'first')
+        check.opt_uuid_param(after, 'after')
+        result = await self.graphql_client.gen_query(
+            'allTodoUsers(after: $after, first: $first) { id name username }',
+            GraphQLArg(name='after', arg_type='UUID', value=after),
+            GraphQLArg(name='first', arg_type='Int', value=first)
+        )
+        return result['allTodoUsers']
+
     async def gen_todo_item(self, obj_id):
         check.uuid_param(obj_id, 'obj_id')
         result = await self.graphql_client.gen_query(
@@ -130,6 +140,56 @@ async def test_create_todo_user_graphql():
     get_result = await client.gen_todo_user(UUID(hex=create_result['id']))
     assert get_result['name'] == 'Test Name'
     assert get_result['username'] == 'testname'
+
+
+async def test_all_todo_users_graphql():
+    client = create_todo_mem_client()
+    create_result_one = await client.gen_create_todo_user(
+        {
+            'name': 'User One',
+            'username': 'userone'
+        }
+    )
+    id_one = UUID(hex=create_result_one['id'])
+    create_result_two = await client.gen_create_todo_user(
+        {
+            'name': 'User Two',
+            'username': 'usertwo'
+        }
+    )
+    id_two = UUID(hex=create_result_two['id'])
+    create_result_three = await client.gen_create_todo_user(
+        {
+            'name': 'User Three',
+            'username': 'userthree'
+        }
+    )
+    id_three = UUID(hex=create_result_three['id'])
+
+    low_id, mid_id, high_id = tuple(sorted([id_one, id_two, id_three]))
+
+    after_low_id_objs = await client.gen_all_todo_users(after=low_id)
+    assert len(after_low_id_objs) == 2
+
+    def get_objs_by_id(objs):
+        uuids = [UUID(hex=obj['id']) for obj in objs]
+        return dict(zip(uuids, objs))
+
+    obj_by_id = get_objs_by_id(after_low_id_objs)
+    assert list(obj_by_id.keys()) == [mid_id, high_id]
+
+    if id_one in obj_by_id:
+        assert obj_by_id[id_one]['name'] == 'User One'
+
+    if id_two in obj_by_id:
+        assert obj_by_id[id_two]['name'] == 'User Two'
+
+    if id_three in obj_by_id:
+        assert obj_by_id[id_three]['name'] == 'User Three'
+
+    after_low_first_one_objs = await client.gen_all_todo_users(after=low_id, first=1)
+    assert len(after_low_first_one_objs) == 1
+    assert list(get_objs_by_id(after_low_first_one_objs).keys())[0] == mid_id
 
 
 async def test_create_todo_item_graphql():
