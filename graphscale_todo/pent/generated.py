@@ -4,8 +4,12 @@ from graphscale.grapple.graphql_impl import (
     gen_delete_pent_dynamic,
     gen_update_pent_dynamic,
     gen_browse_pents_dynamic,
+    gen_pent_dynamic,
+    gen_from_stored_id_dynamic,
 )
 from graphscale.pent import Pent, PentMutationData, create_pent, delete_pent, update_pent
+
+from . import pents
 
 class QueryGenerated:
     @property
@@ -23,6 +27,9 @@ class QueryGenerated:
 
     async def gen_all_todo_items(self, first, after=None):
         return await gen_browse_pents_dynamic(self.context, after, first, 'TodoItem')
+
+    async def gen_todo_list(self, obj_id):
+        return await gen_pent_dynamic(self.context, 'TodoList', obj_id)
 
 
 class MutationGenerated:
@@ -70,6 +77,9 @@ class TodoListGenerated(Pent):
     @property
     def name(self):
         return self._data['name']
+
+    async def gen_owner(self):
+        return await gen_from_stored_id_dynamic(self.context(), 'TodoUser', self._data, 'owner_id')
 
 class TodoItemGenerated(Pent):
     @property

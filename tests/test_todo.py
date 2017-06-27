@@ -49,6 +49,22 @@ class TodoGraphQLClient:
         )
         return result['updateTodoUser']
 
+    async def gen_create_todo_list(self, data):
+        check.dict_param(data, 'data')
+        result = await self.graphql_client.gen_mutation(
+            'createTodoList(data: $data) { id name }',
+            GraphQLArg(name='data', arg_type='CreateTodoListData!', value=data)
+        )
+        return result['createTodoList']
+
+    async def gen_todo_list(self, obj_id):
+        check.uuid_param(obj_id, 'obj_id')
+        result = await self.graphql_client.gen_query(
+            'todoList(id: $id) { id name owner { id name } }',
+            GraphQLArg(name='id', arg_type='UUID!', value=obj_id),
+        )
+        return result['todoList']
+
     async def gen_create_todo_item(self, data):
         check.dict_param(data, 'data')
         result = await self.graphql_client.gen_mutation(
@@ -61,6 +77,14 @@ class TodoGraphQLClient:
         check.uuid_param(obj_id, 'obj_id')
         result = await self.graphql_client.gen_query(
             'todoUser(id: $id) { id name username }',
+            GraphQLArg(name='id', arg_type='UUID!', value=obj_id)
+        )
+        return result['todoUser']
+
+    async def gen_todo_user_complete_graph(self, obj_id):
+        check.uuid_param(obj_id, 'obj_id')
+        result = await self.graphql_client.gen_query(
+            'todoUser(id: $id) { id name username todoLists { id name } }',
             GraphQLArg(name='id', arg_type='UUID!', value=obj_id)
         )
         return result['todoUser']
@@ -142,6 +166,11 @@ async def test_create_todo_user_graphql():
     assert get_result['username'] == 'testname'
 
 
+def get_objs_by_id(objs):
+    uuids = [UUID(hex=obj['id']) for obj in objs]
+    return dict(zip(uuids, objs))
+
+
 async def test_all_todo_users_graphql():
     client = create_todo_mem_client()
     create_result_one = await client.gen_create_todo_user(
@@ -171,10 +200,6 @@ async def test_all_todo_users_graphql():
     after_low_id_objs = await client.gen_all_todo_users(after=low_id)
     assert len(after_low_id_objs) == 2
 
-    def get_objs_by_id(objs):
-        uuids = [UUID(hex=obj['id']) for obj in objs]
-        return dict(zip(uuids, objs))
-
     obj_by_id = get_objs_by_id(after_low_id_objs)
     assert list(obj_by_id.keys()) == [mid_id, high_id]
 
@@ -190,6 +215,50 @@ async def test_all_todo_users_graphql():
     after_low_first_one_objs = await client.gen_all_todo_users(after=low_id, first=1)
     assert len(after_low_first_one_objs) == 1
     assert list(get_objs_by_id(after_low_first_one_objs).keys())[0] == mid_id
+
+
+async def test_create_user_list_graphql():
+    client = create_todo_mem_client()
+    create_user_result = await client.gen_create_todo_user(
+        {
+            'name': 'User With Two Lists',
+            'username': 'usertwolists'
+        }
+    )
+
+    user_id = UUID(hex=create_user_result['id'])
+
+    create_list_one_result = await client.gen_create_todo_list(
+        {
+            'name': 'List One',
+            'ownerId': user_id
+        }
+    )
+    list_one_id = UUID(hex=create_list_one_result['id'])
+    assert create_list_one_result['name'] == 'List One'
+
+    get_list_one_result = await client.gen_todo_list(list_one_id)
+    assert get_list_one_result['id'] == str(list_one_id)
+    assert get_list_one_result['name'] == 'List One'
+    assert get_list_one_result['owner']['id'] == str(user_id)
+    assert get_list_one_result['owner']['name'] == 'User With Two Lists'
+
+    create_list_result = await client.gen_create_todo_list({'name': 'List Two', 'ownerId': user_id})
+    list_two_id = UUID(hex=create_list_result['id'])
+
+    get_list_two_result = await client.gen_todo_list(list_two_id)
+    assert get_list_two_result['id'] == str(list_two_id)
+    assert get_list_two_result['name'] == 'List Two'
+    assert get_list_two_result['owner']['id'] == str(user_id)
+    assert get_list_two_result['owner']['name'] == 'User With Two Lists'
+
+    user_graph = await client.gen_todo_user_complete_graph(user_id)
+    assert user_graph['id'] == str(user_id)
+    assert user_graph['name'] == 'User With Two Lists'
+    assert len(user_graph['todoLists']) == 2
+    todo_lists = get_objs_by_id(user_graph['todoLists'])
+    assert todo_lists[list_one_id]['name'] == 'List One'
+    assert todo_lists[list_two_id]['name'] == 'List Two'
 
 
 async def test_create_todo_item_graphql():

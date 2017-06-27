@@ -20,9 +20,10 @@ class TodoUser(generated.TodoUserGenerated):
 
 
 class TodoItem(generated.TodoItemGenerated):
-    async def gen_owner(self):
-        return await TodoUser.gen(self.context, self._data['owner_id'])
+    pass
 
 
 class TodoList(generated.TodoListGenerated):
     pass
+    # async def gen_owner(self):
+    #     return await gen_from_stored_id_dynamic(self.context(), 'TodoUser', self._data, 'owner_id')
