@@ -92,6 +92,14 @@ GraphQLQuery = GraphQLObjectType(
             },
             resolver=define_default_resolver('gen_todo_item'),
         ),
+        'allTodoItems': GraphQLField(
+            type=req(list_of(req(GraphQLTodoItem))),
+            args={
+                'first': GraphQLArgument(type=GraphQLInt, default_value=100),
+                'after': GraphQLArgument(type=GraphQLUUID),
+            },
+            resolver=define_default_resolver('gen_all_todo_items'),
+        ),
     },
 )
 

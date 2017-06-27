@@ -25,6 +25,9 @@ class QueryGenerated:
         cls = self.context.cls_from_name('TodoItem')
         return await cls.gen(self.context, obj_id)
 
+    async def gen_all_todo_items(self, first, after=None):
+        return await gen_browse_pents_dynamic(self.context, after, first, 'TodoItem')
+
 
 class MutationGenerated:
     @property

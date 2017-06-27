@@ -27,6 +27,7 @@ type Query {
     allTodoUsers(first: Int = 100, after: UUID): [TodoUser!]! @browsePents
 
     todoItem(id: UUID!): TodoItem @readPent
+    allTodoItems(first: Int = 100, after: UUID): [TodoItem!]! @browsePents
 }
 
 type Mutation {
