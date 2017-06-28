@@ -207,22 +207,22 @@ GraphQLCreateTodoUserPayload = GraphQLObjectType(
     },
 )
 
-GraphQLCreateTodoListPayload = GraphQLObjectType(
-    name='CreateTodoListPayload',
-    fields=lambda: {
-        'todoList': GraphQLField(
-            type=GraphQLTodoList,
-            resolver=define_default_resolver('todo_list'),
-        ),
-    },
-)
-
 GraphQLUpdateTodoUserPayload = GraphQLObjectType(
     name='UpdateTodoUserPayload',
     fields=lambda: {
         'todoUser': GraphQLField(
             type=GraphQLTodoUser,
             resolver=define_default_resolver('todo_user'),
+        ),
+    },
+)
+
+GraphQLCreateTodoListPayload = GraphQLObjectType(
+    name='CreateTodoListPayload',
+    fields=lambda: {
+        'todoList': GraphQLField(
+            type=GraphQLTodoList,
+            resolver=define_default_resolver('todo_list'),
         ),
     },
 )
@@ -245,18 +245,18 @@ GraphQLCreateTodoUserData = GraphQLInputObjectType(
     },
 )
 
+GraphQLUpdateTodoUserData = GraphQLInputObjectType(
+    name='UpdateTodoUserData',
+    fields=lambda: {
+        'name': GraphQLInputObjectField(type=GraphQLString),
+    },
+)
+
 GraphQLCreateTodoListData = GraphQLInputObjectType(
     name='CreateTodoListData',
     fields=lambda: {
         'name': GraphQLInputObjectField(type=req(GraphQLString)),
         'ownerId': GraphQLInputObjectField(type=req(GraphQLUUID)),
-    },
-)
-
-GraphQLUpdateTodoUserData = GraphQLInputObjectType(
-    name='UpdateTodoUserData',
-    fields=lambda: {
-        'name': GraphQLInputObjectField(type=GraphQLString),
     },
 )
 

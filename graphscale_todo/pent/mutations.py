@@ -21,18 +21,11 @@ class CreateTodoListData(generated.CreateTodoListDataGenerated):
     pass
 
 
-# __CreateTodoUserPayloadDataMixin = namedtuple('__CreateTodoUserPayloadDataMixin', 'todo_user')
-
-# class CreateTodoUserPayload(PentMutationPayload, __CreateTodoUserPayloadDataMixin):
-#     pass
-
-
 __CreateTodoUserPayloadDataMixin = namedtuple('__CreateTodoUserPayloadDataMixin', 'todo_user')
 
 
 class CreateTodoUserPayload(PentMutationPayload, __CreateTodoUserPayloadDataMixin):
     pass
-
 
 
 __CreateTodoListPayloadDataMixin = namedtuple('__CreateTodoListPayloadDataMixin', 'todo_list')
@@ -42,7 +35,6 @@ class CreateTodoListPayload(PentMutationPayload, __CreateTodoListPayloadDataMixi
     pass
 
 
-
 __CreateTodoItemPayloadDataMixin = namedtuple('__CreateTodoItemPayloadDataMixin', 'todo_item')
 
 
@@ -50,10 +42,8 @@ class CreateTodoItemPayload(PentMutationPayload, __CreateTodoItemPayloadDataMixi
     pass
 
 
-
 __UpdateTodoUserPayloadDataMixin = namedtuple('__UpdateTodoUserPayloadDataMixin', 'todo_user')
 
 
 class UpdateTodoUserPayload(PentMutationPayload, __UpdateTodoUserPayloadDataMixin):
     pass
-

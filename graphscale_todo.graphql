@@ -52,18 +52,18 @@ input CreateTodoUserData @pentMutationData {
 
 type CreateTodoUserPayload @pentMutationPayload { todoUser: TodoUser }
 
+input UpdateTodoUserData @pentMutationData {
+    name: String
+}
+
+type UpdateTodoUserPayload @pentMutationPayload { todoUser: TodoUser }
+
 input CreateTodoListData @pentMutationData {
     name: String!
     ownerId: UUID!
 }
 
 type CreateTodoListPayload @pentMutationPayload { todoList: TodoList } 
-
-input UpdateTodoUserData @pentMutationData {
-    name: String
-}
-
-type UpdateTodoUserPayload @pentMutationPayload { todoUser: TodoUser }
 
 input CreateTodoItemData @pentMutationData {
     text: String!

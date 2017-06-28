@@ -114,6 +114,17 @@ class CreateTodoUserDataGenerated(PentMutationData):
     def username(self):
         return self._data['username']
 
+class UpdateTodoUserDataGenerated(PentMutationData):
+    def __init__(self, *,
+        name=None,
+    ):
+        self._data = locals()
+        del self._data['self']
+
+    @property
+    def name(self):
+        return self._data.get('name')
+
 class CreateTodoListDataGenerated(PentMutationData):
     def __init__(self, *,
         name,
@@ -129,17 +140,6 @@ class CreateTodoListDataGenerated(PentMutationData):
     @property
     def owner_id(self):
         return self._data['owner_id']
-
-class UpdateTodoUserDataGenerated(PentMutationData):
-    def __init__(self, *,
-        name=None,
-    ):
-        self._data = locals()
-        del self._data['self']
-
-    @property
-    def name(self):
-        return self._data.get('name')
 
 class CreateTodoItemDataGenerated(PentMutationData):
     def __init__(self, *,
