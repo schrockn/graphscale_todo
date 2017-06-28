@@ -26,10 +26,10 @@ class TodoGraphQLClient:
     async def gen_create_todo_user(self, data):
         check.dict_param(data, 'data')
         result = await self.graphql_client.gen_mutation(
-            'createTodoUser(data: $data) { id name username }',
+            'createTodoUser(data: $data) { todoUser { id name username } }',
             GraphQLArg(name='data', arg_type='CreateTodoUserData!', value=data)
         )
-        return result['createTodoUser']
+        return result['createTodoUser']['todoUser']
 
     async def gen_delete_todo_user(self, obj_id):
         check.uuid_param(obj_id, 'obj_id')
@@ -52,10 +52,10 @@ class TodoGraphQLClient:
     async def gen_create_todo_list(self, data):
         check.dict_param(data, 'data')
         result = await self.graphql_client.gen_mutation(
-            'createTodoList(data: $data) { id name }',
+            'createTodoList(data: $data) { todoList { id name } } ',
             GraphQLArg(name='data', arg_type='CreateTodoListData!', value=data)
         )
-        return result['createTodoList']
+        return result['createTodoList']['todoList']
 
     async def gen_todo_list(self, obj_id):
         check.uuid_param(obj_id, 'obj_id')
@@ -68,10 +68,10 @@ class TodoGraphQLClient:
     async def gen_create_todo_item(self, data):
         check.dict_param(data, 'data')
         result = await self.graphql_client.gen_mutation(
-            'createTodoItem(data: $data) { id text }',
+            'createTodoItem(data: $data) { todoItem { id text } }',
             GraphQLArg(name='data', arg_type='CreateTodoItemData!', value=data)
         )
-        return result['createTodoItem']
+        return result['createTodoItem']['todoItem']
 
     async def gen_todo_user(self, obj_id):
         check.uuid_param(obj_id, 'obj_id')
@@ -121,20 +121,6 @@ class TodoGraphQLClient:
 
 def create_todo_mem_client():
     return TodoGraphQLClient(InProcessGraphQLClient(Root(in_mem_context()), graphql_schema()))
-
-
-async def test_create_todo_user():
-    root = Root(in_mem_context())
-    out_todo = await root.gen_create_todo_user(
-        CreateTodoUserData(name='Test Name', username='testname')
-    )
-    assert isinstance(out_todo, TodoUser)
-    assert out_todo.name == 'Test Name'
-
-    todo = await root.gen_todo_user(out_todo.obj_id)
-    assert isinstance(todo, TodoUser)
-    assert todo.name == 'Test Name'
-    assert todo.username == 'testname'
 
 
 async def test_create_delete_todo_user():

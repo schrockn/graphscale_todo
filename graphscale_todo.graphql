@@ -2,41 +2,26 @@ type TodoUser @pent(type_id: 100000) {
     id: UUID!
     name: String!
     username: String!
-    todoLists(first: Int = 100, after: UUID): [TodoList!]!
-        @edgeToStoredId(edgeName: "user_to_list_edge", edgeId: 2039430, field: "owner")
+    todoLists(
+        first: Int = 100,
+        after: UUID):
+    [TodoList!]! @edgeToStoredId(edgeName: "user_to_list_edge", edgeId: 10000, field: "owner")
 }
 
 type TodoList @pent(type_id: 100002) {
     id: UUID!
     name: String!
     owner: TodoUser @genFromStoredId
-    todoItems(first: Int = 100, after: UUID): [TodoItem!]!
-        @edgeToStoredId(edgeName: "list_to_item_edge", edgeId: 83948934, field: "list")
+    todoItems(
+        first: Int = 100,
+        after: UUID):
+    [TodoItem!]! @edgeToStoredId(edgeName: "list_to_item_edge", edgeId: 10001, field: "list")
 }
 
 type TodoItem @pent(type_id: 100001) {
     id: UUID!
     text: String!
     list: TodoList @genFromStoredId
-}
-
-input CreateTodoUserData @pentMutationData {
-    name: String!
-    username: String!
-}
-
-input CreateTodoListData @pentMutationData {
-    name: String!
-    ownerId: UUID!
-}
-
-input UpdateTodoUserData @pentMutationData {
-    name: String
-}
-
-input CreateTodoItemData @pentMutationData {
-    text: String!
-    listId: UUID!
 }
 
 type Query {
@@ -50,12 +35,41 @@ type Query {
 }
 
 type Mutation {
-    createTodoUser(data: CreateTodoUserData!): TodoUser @createPent
+    createTodoUser(data: CreateTodoUserData!): CreateTodoUserPayload @customMutation
     updateTodoUser(id: UUID!, data: UpdateTodoUserData!): TodoUser @updatePent
     deleteTodoUser(id: UUID!): TodoUser @deletePent
 
-    createTodoList(data: CreateTodoListData!): TodoList @createPent
+    createTodoList(data: CreateTodoListData!): CreateTodoListPayload @customMutation
 
-    createTodoItem(data: CreateTodoItemData!): TodoItem @createPent
+    createTodoItem(data: CreateTodoItemData!): CreateTodoItemPayload @customMutation
     deleteTodoItem(id: UUID!): TodoItem @deletePent
 }
+
+input CreateTodoUserData @pentMutationData {
+    name: String!
+    username: String!
+}
+
+type CreateTodoUserPayload @pentMutationPayload { todoUser: TodoUser }
+
+input CreateTodoListData @pentMutationData {
+    name: String!
+    ownerId: UUID!
+}
+
+type CreateTodoListPayload @pentMutationPayload { todoList: TodoList } 
+
+input UpdateTodoUserData @pentMutationData {
+    name: String
+}
+
+# type UpdateTodoUserPayload @pentMutationPayload {
+#     todoUser: TodoUser
+# }
+
+input CreateTodoItemData @pentMutationData {
+    text: String!
+    listId: UUID!
+}
+
+type CreateTodoItemPayload @pentMutationPayload { todoItem: TodoItem }

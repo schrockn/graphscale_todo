@@ -152,7 +152,7 @@ GraphQLMutation = GraphQLObjectType(
     name='Mutation',
     fields=lambda: {
         'createTodoUser': GraphQLField(
-            type=GraphQLTodoUser,
+            type=GraphQLCreateTodoUserPayload,
             args={
                 'data': GraphQLArgument(type=req(GraphQLCreateTodoUserData)),
             },
@@ -174,14 +174,14 @@ GraphQLMutation = GraphQLObjectType(
             resolver=define_default_resolver('gen_delete_todo_user'),
         ),
         'createTodoList': GraphQLField(
-            type=GraphQLTodoList,
+            type=GraphQLCreateTodoListPayload,
             args={
                 'data': GraphQLArgument(type=req(GraphQLCreateTodoListData)),
             },
             resolver=define_pent_mutation_resolver('gen_create_todo_list', 'CreateTodoListData'),
         ),
         'createTodoItem': GraphQLField(
-            type=GraphQLTodoItem,
+            type=GraphQLCreateTodoItemPayload,
             args={
                 'data': GraphQLArgument(type=req(GraphQLCreateTodoItemData)),
             },
@@ -193,6 +193,36 @@ GraphQLMutation = GraphQLObjectType(
                 'id': GraphQLArgument(type=req(GraphQLUUID)),
             },
             resolver=define_default_resolver('gen_delete_todo_item'),
+        ),
+    },
+)
+
+GraphQLCreateTodoUserPayload = GraphQLObjectType(
+    name='CreateTodoUserPayload',
+    fields=lambda: {
+        'todoUser': GraphQLField(
+            type=GraphQLTodoUser,
+            resolver=define_default_resolver('todo_user'),
+        ),
+    },
+)
+
+GraphQLCreateTodoListPayload = GraphQLObjectType(
+    name='CreateTodoListPayload',
+    fields=lambda: {
+        'todoList': GraphQLField(
+            type=GraphQLTodoList,
+            resolver=define_default_resolver('todo_list'),
+        ),
+    },
+)
+
+GraphQLCreateTodoItemPayload = GraphQLObjectType(
+    name='CreateTodoItemPayload',
+    fields=lambda: {
+        'todoItem': GraphQLField(
+            type=GraphQLTodoItem,
+            resolver=define_default_resolver('todo_item'),
         ),
     },
 )
