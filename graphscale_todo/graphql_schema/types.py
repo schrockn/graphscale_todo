@@ -167,7 +167,7 @@ GraphQLMutation = GraphQLObjectType(
             resolver=define_pent_mutation_resolver('gen_update_todo_user', 'UpdateTodoUserData'),
         ),
         'deleteTodoUser': GraphQLField(
-            type=GraphQLTodoUser,
+            type=GraphQLDeleteTodoUserPayload,
             args={
                 'id': GraphQLArgument(type=req(GraphQLUUID)),
             },
@@ -188,7 +188,7 @@ GraphQLMutation = GraphQLObjectType(
             resolver=define_pent_mutation_resolver('gen_create_todo_item', 'CreateTodoItemData'),
         ),
         'deleteTodoItem': GraphQLField(
-            type=GraphQLTodoItem,
+            type=GraphQLDeleteTodoItemPayload,
             args={
                 'id': GraphQLArgument(type=req(GraphQLUUID)),
             },
@@ -217,6 +217,16 @@ GraphQLUpdateTodoUserPayload = GraphQLObjectType(
     },
 )
 
+GraphQLDeleteTodoUserPayload = GraphQLObjectType(
+    name='DeleteTodoUserPayload',
+    fields=lambda: {
+        'deletedId': GraphQLField(
+            type=GraphQLUUID,
+            resolver=define_default_resolver('deleted_id'),
+        ),
+    },
+)
+
 GraphQLCreateTodoListPayload = GraphQLObjectType(
     name='CreateTodoListPayload',
     fields=lambda: {
@@ -233,6 +243,16 @@ GraphQLCreateTodoItemPayload = GraphQLObjectType(
         'todoItem': GraphQLField(
             type=GraphQLTodoItem,
             resolver=define_default_resolver('todo_item'),
+        ),
+    },
+)
+
+GraphQLDeleteTodoItemPayload = GraphQLObjectType(
+    name='DeleteTodoItemPayload',
+    fields=lambda: {
+        'deletedId': GraphQLField(
+            type=GraphQLUUID,
+            resolver=define_default_resolver('deleted_id'),
         ),
     },
 )

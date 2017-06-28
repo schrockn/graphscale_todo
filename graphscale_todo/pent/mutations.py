@@ -47,3 +47,19 @@ __UpdateTodoUserPayloadDataMixin = namedtuple('__UpdateTodoUserPayloadDataMixin'
 
 class UpdateTodoUserPayload(PentMutationPayload, __UpdateTodoUserPayloadDataMixin):
     pass
+
+
+__DeleteTodoUserPayloadDataMixin = namedtuple('__DeleteTodoUserPayloadDataMixin', 'deleted_id')
+
+
+class DeleteTodoUserPayload(PentMutationPayload, __DeleteTodoUserPayloadDataMixin):
+    pass
+
+
+
+__DeleteTodoItemPayloadDataMixin = namedtuple('__DeleteTodoItemPayloadDataMixin', 'deleted_id')
+
+
+class DeleteTodoItemPayload(PentMutationPayload, __DeleteTodoItemPayloadDataMixin):
+    pass
+

@@ -34,7 +34,7 @@ class TodoGraphQLClient:
     async def gen_delete_todo_user(self, obj_id):
         check.uuid_param(obj_id, 'obj_id')
         result = await self.graphql_client.gen_mutation(
-            'deleteTodoUser(id: $id) { id name username }',
+            'deleteTodoUser(id: $id) { deletedId }',
             GraphQLArg(name='id', arg_type='UUID!', value=obj_id)
         )
         return result['deleteTodoUser']
@@ -129,7 +129,7 @@ async def test_create_delete_todo_user():
     todo_id = UUID(hex=create_result['id'])
 
     delete_result = await client.gen_delete_todo_user(todo_id)
-    assert delete_result['id'] == str(todo_id)
+    assert delete_result['deletedId'] == str(todo_id)
 
     get_result = await client.gen_todo_user(todo_id)
     assert not get_result

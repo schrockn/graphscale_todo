@@ -37,12 +37,12 @@ type Query {
 type Mutation {
     createTodoUser(data: CreateTodoUserData!): CreateTodoUserPayload @createPent
     updateTodoUser(id: UUID!, data: UpdateTodoUserData!): UpdateTodoUserPayload @updatePent
-    deleteTodoUser(id: UUID!): TodoUser @deletePent
+    deleteTodoUser(id: UUID!): DeleteTodoUserPayload @customGen
 
     createTodoList(data: CreateTodoListData!): CreateTodoListPayload @createPent
 
     createTodoItem(data: CreateTodoItemData!): CreateTodoItemPayload @createPent
-    deleteTodoItem(id: UUID!): TodoItem @deletePent
+    deleteTodoItem(id: UUID!): DeleteTodoItemPayload @customGen
 }
 
 input CreateTodoUserData @pentMutationData {
@@ -58,6 +58,8 @@ input UpdateTodoUserData @pentMutationData {
 
 type UpdateTodoUserPayload @pentMutationPayload { todoUser: TodoUser }
 
+type DeleteTodoUserPayload @pentMutationPayload { deletedId: UUID }
+
 input CreateTodoListData @pentMutationData {
     name: String!
     ownerId: UUID!
@@ -71,3 +73,5 @@ input CreateTodoItemData @pentMutationData {
 }
 
 type CreateTodoItemPayload @pentMutationPayload { todoItem: TodoItem }
+
+type DeleteTodoItemPayload @pentMutationPayload { deletedId: UUID }
