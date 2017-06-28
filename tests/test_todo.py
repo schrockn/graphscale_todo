@@ -43,11 +43,11 @@ class TodoGraphQLClient:
         check.uuid_param(obj_id, 'obj_id')
         check.dict_param(data, 'data')
         result = await self.graphql_client.gen_mutation(
-            'updateTodoUser(id: $id, data: $data) { id name username }',
+            'updateTodoUser(id: $id, data: $data) { todoUser { id name username } }',
             GraphQLArg(name='id', arg_type='UUID!', value=obj_id),
             GraphQLArg(name='data', arg_type='UpdateTodoUserData!', value=data)
         )
-        return result['updateTodoUser']
+        return result['updateTodoUser']['todoUser']
 
     async def gen_create_todo_list(self, data):
         check.dict_param(data, 'data')

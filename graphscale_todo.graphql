@@ -36,7 +36,7 @@ type Query {
 
 type Mutation {
     createTodoUser(data: CreateTodoUserData!): CreateTodoUserPayload @createPent
-    updateTodoUser(id: UUID!, data: UpdateTodoUserData!): TodoUser @updatePent
+    updateTodoUser(id: UUID!, data: UpdateTodoUserData!): UpdateTodoUserPayload @updatePent
     deleteTodoUser(id: UUID!): TodoUser @deletePent
 
     createTodoList(data: CreateTodoListData!): CreateTodoListPayload @createPent
@@ -63,9 +63,7 @@ input UpdateTodoUserData @pentMutationData {
     name: String
 }
 
-# type UpdateTodoUserPayload @pentMutationPayload {
-#     todoUser: TodoUser
-# }
+type UpdateTodoUserPayload @pentMutationPayload { todoUser: TodoUser }
 
 input CreateTodoItemData @pentMutationData {
     text: String!

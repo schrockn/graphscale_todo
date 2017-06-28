@@ -49,3 +49,11 @@ __CreateTodoItemPayloadDataMixin = namedtuple('__CreateTodoItemPayloadDataMixin'
 class CreateTodoItemPayload(PentMutationPayload, __CreateTodoItemPayloadDataMixin):
     pass
 
+
+
+__UpdateTodoUserPayloadDataMixin = namedtuple('__UpdateTodoUserPayloadDataMixin', 'todo_user')
+
+
+class UpdateTodoUserPayload(PentMutationPayload, __UpdateTodoUserPayloadDataMixin):
+    pass
+

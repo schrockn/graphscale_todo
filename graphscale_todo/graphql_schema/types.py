@@ -159,7 +159,7 @@ GraphQLMutation = GraphQLObjectType(
             resolver=define_pent_mutation_resolver('gen_create_todo_user', 'CreateTodoUserData'),
         ),
         'updateTodoUser': GraphQLField(
-            type=GraphQLTodoUser,
+            type=GraphQLUpdateTodoUserPayload,
             args={
                 'id': GraphQLArgument(type=req(GraphQLUUID)),
                 'data': GraphQLArgument(type=req(GraphQLUpdateTodoUserData)),
@@ -213,6 +213,16 @@ GraphQLCreateTodoListPayload = GraphQLObjectType(
         'todoList': GraphQLField(
             type=GraphQLTodoList,
             resolver=define_default_resolver('todo_list'),
+        ),
+    },
+)
+
+GraphQLUpdateTodoUserPayload = GraphQLObjectType(
+    name='UpdateTodoUserPayload',
+    fields=lambda: {
+        'todoUser': GraphQLField(
+            type=GraphQLTodoUser,
+            resolver=define_default_resolver('todo_user'),
         ),
     },
 )

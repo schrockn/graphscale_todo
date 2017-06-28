@@ -40,7 +40,7 @@ class MutationGenerated:
         return await gen_create_pent_dynamic(self.context, 'TodoUser', 'CreateTodoUserData', 'CreateTodoUserPayload', data)
 
     async def gen_update_todo_user(self, obj_id, data):
-        return await gen_update_pent_dynamic(self.context, obj_id, 'TodoUser', 'UpdateTodoUserData', data)
+        return await gen_update_pent_dynamic(self.context, obj_id, 'TodoUser', 'UpdateTodoUserData', 'UpdateTodoUserPayload', data)
 
     async def gen_delete_todo_user(self, obj_id):
         return await gen_delete_pent_dynamic(self.context, 'TodoUser', obj_id)
