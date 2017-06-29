@@ -1,4 +1,4 @@
-from graphscale.kvetch import define_object, define_edge, define_index
+from graphscale.kvetch import define_object, define_edge
 
 def generated_objects():
     return [
