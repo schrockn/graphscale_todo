@@ -1,4 +1,4 @@
-from graphscale.server import define_graphql_endpoint
+from graphscale.server import run_graphql_endpoint
 from graphscale_todo.pent import Root
 from graphscale_todo.config import in_mem_context, single_db_context
 from graphscale_todo.graphql_schema import graphql_schema
@@ -21,8 +21,7 @@ def get_conn_info():
 
 
 def serve(context):
-    app = define_graphql_endpoint(Root(context), graphql_schema())
-    app.run(host='0.0.0.0', debug=True, port=8080)
+    run_graphql_endpoint(Root(context), graphql_schema())
 
 
 if __name__ == '__main__':
