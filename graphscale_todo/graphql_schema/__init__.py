@@ -1,6 +1,6 @@
 from graphql import GraphQLSchema
-from . import types
+from . import generated
 
 
 def graphql_schema():
-    return GraphQLSchema(query=types.GraphQLQuery, mutation=types.GraphQLMutation)
+    return GraphQLSchema(query=generated.GraphQLQuery, mutation=generated.GraphQLMutation)
