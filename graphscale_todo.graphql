@@ -1,3 +1,13 @@
+type Query {
+    todoUser(id: UUID!): TodoUser @readPent
+    allTodoUsers(first: Int = 100, after: UUID): [TodoUser!]! @browsePents
+
+    todoItem(id: UUID!): TodoItem @readPent
+    allTodoItems(first: Int = 100, after: UUID): [TodoItem!]! @browsePents
+
+    todoList(id: UUID!): TodoList @readPent
+}
+
 type TodoUser @pent(type_id: 100000) {
     id: UUID!
     name: String!
@@ -22,16 +32,6 @@ type TodoItem @pent(type_id: 100001) {
     id: UUID!
     text: String!
     list: TodoList @genFromStoredId
-}
-
-type Query {
-    todoUser(id: UUID!): TodoUser @readPent
-    allTodoUsers(first: Int = 100, after: UUID): [TodoUser!]! @browsePents
-
-    todoItem(id: UUID!): TodoItem @readPent
-    allTodoItems(first: Int = 100, after: UUID): [TodoItem!]! @browsePents
-
-    todoList(id: UUID!): TodoList @readPent
 }
 
 type Mutation {

@@ -34,6 +34,49 @@ from graphscale.grapple import (
     define_pent_mutation_resolver,
 )
 
+GraphQLQuery = GraphQLObjectType(
+    name='Query',
+    fields=lambda: {
+        'todoUser': GraphQLField(
+            type=GraphQLTodoUser,
+            args={
+                'id': GraphQLArgument(type=req(GraphQLUUID)),
+            },
+            resolver=define_default_resolver('gen_todo_user'),
+        ),
+        'allTodoUsers': GraphQLField(
+            type=req(list_of(req(GraphQLTodoUser))),
+            args={
+                'first': GraphQLArgument(type=GraphQLInt, default_value=100),
+                'after': GraphQLArgument(type=GraphQLUUID),
+            },
+            resolver=define_default_resolver('gen_all_todo_users'),
+        ),
+        'todoItem': GraphQLField(
+            type=GraphQLTodoItem,
+            args={
+                'id': GraphQLArgument(type=req(GraphQLUUID)),
+            },
+            resolver=define_default_resolver('gen_todo_item'),
+        ),
+        'allTodoItems': GraphQLField(
+            type=req(list_of(req(GraphQLTodoItem))),
+            args={
+                'first': GraphQLArgument(type=GraphQLInt, default_value=100),
+                'after': GraphQLArgument(type=GraphQLUUID),
+            },
+            resolver=define_default_resolver('gen_all_todo_items'),
+        ),
+        'todoList': GraphQLField(
+            type=GraphQLTodoList,
+            args={
+                'id': GraphQLArgument(type=req(GraphQLUUID)),
+            },
+            resolver=define_default_resolver('gen_todo_list'),
+        ),
+    },
+)
+
 GraphQLTodoUser = GraphQLObjectType(
     name='TodoUser',
     fields=lambda: {
@@ -100,49 +143,6 @@ GraphQLTodoItem = GraphQLObjectType(
         'list': GraphQLField(
             type=GraphQLTodoList,
             resolver=define_default_resolver('gen_list'),
-        ),
-    },
-)
-
-GraphQLQuery = GraphQLObjectType(
-    name='Query',
-    fields=lambda: {
-        'todoUser': GraphQLField(
-            type=GraphQLTodoUser,
-            args={
-                'id': GraphQLArgument(type=req(GraphQLUUID)),
-            },
-            resolver=define_default_resolver('gen_todo_user'),
-        ),
-        'allTodoUsers': GraphQLField(
-            type=req(list_of(req(GraphQLTodoUser))),
-            args={
-                'first': GraphQLArgument(type=GraphQLInt, default_value=100),
-                'after': GraphQLArgument(type=GraphQLUUID),
-            },
-            resolver=define_default_resolver('gen_all_todo_users'),
-        ),
-        'todoItem': GraphQLField(
-            type=GraphQLTodoItem,
-            args={
-                'id': GraphQLArgument(type=req(GraphQLUUID)),
-            },
-            resolver=define_default_resolver('gen_todo_item'),
-        ),
-        'allTodoItems': GraphQLField(
-            type=req(list_of(req(GraphQLTodoItem))),
-            args={
-                'first': GraphQLArgument(type=GraphQLInt, default_value=100),
-                'after': GraphQLArgument(type=GraphQLUUID),
-            },
-            resolver=define_default_resolver('gen_all_todo_items'),
-        ),
-        'todoList': GraphQLField(
-            type=GraphQLTodoList,
-            args={
-                'id': GraphQLArgument(type=req(GraphQLUUID)),
-            },
-            resolver=define_default_resolver('gen_todo_list'),
         ),
     },
 )
