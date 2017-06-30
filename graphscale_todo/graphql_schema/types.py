@@ -27,6 +27,7 @@ from graphscale.grapple import (
     GraphQLDate,
     GraphQLUUID,
     define_default_resolver,
+    define_default_gen_resolver,
     define_pent_mutation_resolver,
 )
 
@@ -38,7 +39,7 @@ GraphQLQuery = GraphQLObjectType(
             args={
                 'id': GraphQLArgument(type=req(GraphQLUUID)),
             },
-            resolver=define_default_resolver('gen_todo_user'),
+            resolver=define_default_gen_resolver('gen_todo_user'),
         ),
         'allTodoUsers': GraphQLField(
             type=req(list_of(req(GraphQLTodoUser))),
@@ -46,14 +47,14 @@ GraphQLQuery = GraphQLObjectType(
                 'first': GraphQLArgument(type=GraphQLInt, default_value=100),
                 'after': GraphQLArgument(type=GraphQLUUID),
             },
-            resolver=define_default_resolver('gen_all_todo_users'),
+            resolver=define_default_gen_resolver('gen_all_todo_users'),
         ),
         'todoItem': GraphQLField(
             type=GraphQLTodoItem,
             args={
                 'id': GraphQLArgument(type=req(GraphQLUUID)),
             },
-            resolver=define_default_resolver('gen_todo_item'),
+            resolver=define_default_gen_resolver('gen_todo_item'),
         ),
         'allTodoItems': GraphQLField(
             type=req(list_of(req(GraphQLTodoItem))),
@@ -61,14 +62,14 @@ GraphQLQuery = GraphQLObjectType(
                 'first': GraphQLArgument(type=GraphQLInt, default_value=100),
                 'after': GraphQLArgument(type=GraphQLUUID),
             },
-            resolver=define_default_resolver('gen_all_todo_items'),
+            resolver=define_default_gen_resolver('gen_all_todo_items'),
         ),
         'todoList': GraphQLField(
             type=GraphQLTodoList,
             args={
                 'id': GraphQLArgument(type=req(GraphQLUUID)),
             },
-            resolver=define_default_resolver('gen_todo_list'),
+            resolver=define_default_gen_resolver('gen_todo_list'),
         ),
     },
 )
@@ -94,7 +95,7 @@ GraphQLTodoUser = GraphQLObjectType(
                 'first': GraphQLArgument(type=GraphQLInt, default_value=100),
                 'after': GraphQLArgument(type=GraphQLUUID),
             },
-            resolver=define_default_resolver('gen_todo_lists'),
+            resolver=define_default_gen_resolver('gen_todo_lists'),
         ),
     },
 )
@@ -112,7 +113,7 @@ GraphQLTodoList = GraphQLObjectType(
         ),
         'owner': GraphQLField(
             type=GraphQLTodoUser,
-            resolver=define_default_resolver('gen_owner'),
+            resolver=define_default_gen_resolver('gen_owner'),
         ),
         'todoItems': GraphQLField(
             type=req(list_of(req(GraphQLTodoItem))),
@@ -120,7 +121,7 @@ GraphQLTodoList = GraphQLObjectType(
                 'first': GraphQLArgument(type=GraphQLInt, default_value=100),
                 'after': GraphQLArgument(type=GraphQLUUID),
             },
-            resolver=define_default_resolver('gen_todo_items'),
+            resolver=define_default_gen_resolver('gen_todo_items'),
         ),
     },
 )
@@ -138,7 +139,7 @@ GraphQLTodoItem = GraphQLObjectType(
         ),
         'list': GraphQLField(
             type=GraphQLTodoList,
-            resolver=define_default_resolver('gen_list'),
+            resolver=define_default_gen_resolver('gen_list'),
         ),
     },
 )
@@ -166,7 +167,7 @@ GraphQLMutation = GraphQLObjectType(
             args={
                 'id': GraphQLArgument(type=req(GraphQLUUID)),
             },
-            resolver=define_default_resolver('gen_delete_todo_user'),
+            resolver=define_default_gen_resolver('gen_delete_todo_user'),
         ),
         'createTodoList': GraphQLField(
             type=GraphQLCreateTodoListPayload,
@@ -187,7 +188,7 @@ GraphQLMutation = GraphQLObjectType(
             args={
                 'id': GraphQLArgument(type=req(GraphQLUUID)),
             },
-            resolver=define_default_resolver('gen_delete_todo_item'),
+            resolver=define_default_gen_resolver('gen_delete_todo_item'),
         ),
     },
 )
