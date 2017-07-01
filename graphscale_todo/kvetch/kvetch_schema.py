@@ -1,4 +1,4 @@
-from graphscale.kvetch import define_schema, define_object, define_edge, define_string_index
+from graphscale.kvetch import define_schema, define_object, define_stored_id_edge, define_string_index
 from .generated import generated_objects, generated_indexes, generated_edges
 
 

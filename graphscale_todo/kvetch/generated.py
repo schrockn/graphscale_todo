@@ -1,4 +1,4 @@
-from graphscale.kvetch import define_object, define_edge
+from graphscale.kvetch import define_object, define_stored_id_edge
 
 def generated_objects():
     return [
@@ -9,8 +9,8 @@ def generated_objects():
 
 def generated_edges():
     return [
-        define_edge(edge_name='user_to_list_edge', edge_id=10000, from_id_attr='owner_id'),
-        define_edge(edge_name='list_to_item_edge', edge_id=10001, from_id_attr='list_id'),
+        define_stored_id_edge(edge_name='user_to_list_edge', edge_id=10000, from_id_attr='owner_id'),
+        define_stored_id_edge(edge_name='list_to_item_edge', edge_id=10001, from_id_attr='list_id'),
     ]
 
 def generated_indexes():
