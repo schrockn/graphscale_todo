@@ -1,77 +1,86 @@
 type Query {
-    todoUser(id: UUID!): TodoUser @readPent
-    allTodoUsers(first: Int = 100, after: UUID): [TodoUser!]! @browsePents
-
-    todoItem(id: UUID!): TodoItem @readPent
-    allTodoItems(first: Int = 100, after: UUID): [TodoItem!]! @browsePents
-
-    todoList(id: UUID!): TodoList @readPent
+  todoUser(id: UUID!): TodoUser @readPent
+  allTodoUsers(first: Int = 100, after: UUID): [TodoUser!]! @browsePents
+  todoItem(id: UUID!): TodoItem @readPent
+  allTodoItems(first: Int = 100, after: UUID): [TodoItem!]! @browsePents
+  todoList(id: UUID!): TodoList @readPent
 }
 
 type TodoUser @pent(type_id: 100000) {
-    id: UUID!
-    name: String!
-    username: String!
-    todoLists(
-        first: Int = 100,
-        after: UUID):
-    [TodoList!]! @edgeToStoredId(edgeName: "user_to_list_edge", edgeId: 10000, field: "owner")
+  id: UUID!
+  name: String!
+  username: String!
+  todoLists(first: Int = 100, after: UUID): [TodoList!]!
+    @edgeToStoredId(
+      edgeName: "user_to_list_edge"
+      edgeId: 10000
+      field: "owner"
+    )
 }
 
 type TodoList @pent(type_id: 100002) {
-    id: UUID!
-    name: String!
-    owner: TodoUser @genFromStoredId
-    todoItems(
-        first: Int = 100,
-        after: UUID):
-    [TodoItem!]! @edgeToStoredId(edgeName: "list_to_item_edge", edgeId: 10001, field: "list")
+  id: UUID!
+  name: String!
+  owner: TodoUser @genFromStoredId
+  todoItems(first: Int = 100, after: UUID): [TodoItem!]!
+    @edgeToStoredId(edgeName: "list_to_item_edge", edgeId: 10001, field: "list")
 }
 
 type TodoItem @pent(type_id: 100001) {
-    id: UUID!
-    text: String!
-    list: TodoList @genFromStoredId
+  id: UUID!
+  text: String!
+  list: TodoList @genFromStoredId
 }
 
 type Mutation {
-    createTodoUser(data: CreateTodoUserData!): CreateTodoUserPayload @createPent
-    updateTodoUser(id: UUID!, data: UpdateTodoUserData!): UpdateTodoUserPayload @updatePent
-    deleteTodoUser(id: UUID!): DeleteTodoUserPayload @deletePent(type: "TodoUser")
-
-    createTodoList(data: CreateTodoListData!): CreateTodoListPayload @createPent
-
-    createTodoItem(data: CreateTodoItemData!): CreateTodoItemPayload @createPent
-    deleteTodoItem(id: UUID!): DeleteTodoItemPayload @deletePent(type: "TodoItem")
+  createTodoUser(data: CreateTodoUserData!): CreateTodoUserPayload @createPent
+  updateTodoUser(id: UUID!, data: UpdateTodoUserData!): UpdateTodoUserPayload
+    @updatePent
+  deleteTodoUser(id: UUID!): DeleteTodoUserPayload @deletePent(type: "TodoUser")
+  createTodoList(data: CreateTodoListData!): CreateTodoListPayload @createPent
+  createTodoItem(data: CreateTodoItemData!): CreateTodoItemPayload @createPent
+  deleteTodoItem(id: UUID!): DeleteTodoItemPayload @deletePent(type: "TodoItem")
 }
 
 input CreateTodoUserData @pentMutationData {
-    name: String!
-    username: String!
+  name: String!
+  username: String!
 }
 
-type CreateTodoUserPayload @pentMutationPayload { todoUser: TodoUser }
+type CreateTodoUserPayload @pentMutationPayload {
+  todoUser: TodoUser
+}
 
 input UpdateTodoUserData @pentMutationData {
-    name: String
+  name: String
 }
 
-type UpdateTodoUserPayload @pentMutationPayload { todoUser: TodoUser }
+type UpdateTodoUserPayload @pentMutationPayload {
+  todoUser: TodoUser
+}
 
-type DeleteTodoUserPayload @pentMutationPayload { deletedId: UUID }
+type DeleteTodoUserPayload @pentMutationPayload {
+  deletedId: UUID
+}
 
 input CreateTodoListData @pentMutationData {
-    name: String!
-    ownerId: UUID!
+  name: String!
+  ownerId: UUID!
 }
 
-type CreateTodoListPayload @pentMutationPayload { todoList: TodoList } 
+type CreateTodoListPayload @pentMutationPayload {
+  todoList: TodoList
+}
 
 input CreateTodoItemData @pentMutationData {
-    text: String!
-    listId: UUID!
+  text: String!
+  listId: UUID!
 }
 
-type CreateTodoItemPayload @pentMutationPayload { todoItem: TodoItem }
+type CreateTodoItemPayload @pentMutationPayload {
+  todoItem: TodoItem
+}
 
-type DeleteTodoItemPayload @pentMutationPayload { deletedId: UUID }
+type DeleteTodoItemPayload @pentMutationPayload {
+  deletedId: UUID
+}
