@@ -1,10 +1,5 @@
 from . import generated
 
-# from graphscale.pent import delete_pent
-# from graphscale.grapple.graphql_impl import gen_delete_pent_dynamic
-
-# from .mutations import DeleteTodoUserPayload
-
 
 class Root(generated.QueryGenerated, generated.MutationGenerated):
     def __init__(self, context):

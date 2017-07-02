@@ -9,8 +9,8 @@ def generated_objects():
 
 def generated_edges():
     return [
-        define_stored_id_edge(edge_name='user_to_list_edge', edge_id=10000, from_id_attr='owner_id', from_type='TodoList'),
-        define_stored_id_edge(edge_name='list_to_item_edge', edge_id=10001, from_id_attr='list_id', from_type='TodoItem'),
+        define_stored_id_edge(edge_name='user_to_list_edge', edge_id=10000, stored_id_attr='owner_id', stored_on_type='TodoList'),
+        define_stored_id_edge(edge_name='list_to_item_edge', edge_id=10001, stored_id_attr='list_id', stored_on_type='TodoItem'),
     ]
 
 def generated_indexes():
