@@ -21,45 +21,25 @@ class CreateTodoListData(generated.CreateTodoListDataGenerated):
     pass
 
 
-__CreateTodoUserPayloadDataMixin = namedtuple('__CreateTodoUserPayloadDataMixin', 'todo_user')
-
-
-class CreateTodoUserPayload(PentMutationPayload, __CreateTodoUserPayloadDataMixin):
+class CreateTodoUserPayload(PentMutationPayload, generated.CreateTodoUserPayloadDataMixin):
     pass
 
 
-__CreateTodoListPayloadDataMixin = namedtuple('__CreateTodoListPayloadDataMixin', 'todo_list')
-
-
-class CreateTodoListPayload(PentMutationPayload, __CreateTodoListPayloadDataMixin):
+class CreateTodoListPayload(PentMutationPayload, generated.CreateTodoListPayloadDataMixin):
     pass
 
 
-__CreateTodoItemPayloadDataMixin = namedtuple('__CreateTodoItemPayloadDataMixin', 'todo_item')
-
-
-class CreateTodoItemPayload(PentMutationPayload, __CreateTodoItemPayloadDataMixin):
+class CreateTodoItemPayload(PentMutationPayload, generated.CreateTodoItemPayloadDataMixin):
     pass
 
 
-__UpdateTodoUserPayloadDataMixin = namedtuple('__UpdateTodoUserPayloadDataMixin', 'todo_user')
-
-
-class UpdateTodoUserPayload(PentMutationPayload, __UpdateTodoUserPayloadDataMixin):
+class UpdateTodoUserPayload(PentMutationPayload, generated.UpdateTodoUserPayloadDataMixin):
     pass
 
 
-__DeleteTodoUserPayloadDataMixin = namedtuple('__DeleteTodoUserPayloadDataMixin', 'deleted_id')
-
-
-class DeleteTodoUserPayload(PentMutationPayload, __DeleteTodoUserPayloadDataMixin):
+class DeleteTodoUserPayload(PentMutationPayload, generated.DeleteTodoUserPayloadDataMixin):
     pass
 
 
-
-__DeleteTodoItemPayloadDataMixin = namedtuple('__DeleteTodoItemPayloadDataMixin', 'deleted_id')
-
-
-class DeleteTodoItemPayload(PentMutationPayload, __DeleteTodoItemPayloadDataMixin):
+class DeleteTodoItemPayload(PentMutationPayload, generated.DeleteTodoItemPayloadDataMixin):
     pass
-

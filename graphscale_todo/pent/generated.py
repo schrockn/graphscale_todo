@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 from graphscale import check
 from graphscale.grapple.graphql_impl import (
     gen_create_pent_dynamic,
@@ -157,3 +159,21 @@ class CreateTodoItemDataGenerated(PentMutationData):
     def list_id(self):
         return self._data['list_id']
 
+
+
+CreateTodoUserPayloadDataMixin = namedtuple('CreateTodoUserPayloadDataMixin', 'todo_user')
+
+
+UpdateTodoUserPayloadDataMixin = namedtuple('UpdateTodoUserPayloadDataMixin', 'todo_user')
+
+
+DeleteTodoUserPayloadDataMixin = namedtuple('DeleteTodoUserPayloadDataMixin', 'deleted_id')
+
+
+CreateTodoListPayloadDataMixin = namedtuple('CreateTodoListPayloadDataMixin', 'todo_list')
+
+
+CreateTodoItemPayloadDataMixin = namedtuple('CreateTodoItemPayloadDataMixin', 'todo_item')
+
+
+DeleteTodoItemPayloadDataMixin = namedtuple('DeleteTodoItemPayloadDataMixin', 'deleted_id')
