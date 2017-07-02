@@ -1,0 +1,4 @@
+pip3 uninstall ~/githubs/graphql-core/
+pip3 uninstall ~/githubs/graphql-server-core/
+pip3 uninstall ~/githubs/sanic-graphql/
+pip3 uninstall ~/code/schrockn_github/graphscale/

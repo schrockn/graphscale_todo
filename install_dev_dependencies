@@ -1,0 +1,4 @@
+pip3 install -e ~/githubs/graphql-core/
+pip3 install -e ~/githubs/graphql-server-core/
+pip3 install -e ~/githubs/sanic-graphql/
+pip3 install -e ~/code/schrockn_github/graphscale/
