@@ -1,3 +1,7 @@
+#W0661: unused imports lint
+#C0301: line too long
+#pylint: disable=W0661, C0301
+
 from graphscale.kvetch import define_object, define_stored_id_edge
 
 def generated_objects():
