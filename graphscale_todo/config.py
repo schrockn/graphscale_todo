@@ -1,4 +1,4 @@
-from graphscale.pent import PentConfig, PentContext, create_class_map
+from graphscale.pent import PentConfig, create_fresh_pent_context, create_class_map
 from graphscale.kvetch import init_from_conn, init_in_memory
 from .kvetch import kvetch_schema
 from .pent import pents, mutations
@@ -11,7 +11,7 @@ def pent_config():
 
 
 def pent_context(kvetch):
-    return PentContext(kvetch=kvetch, config=pent_config())
+    return create_fresh_pent_context(kvetch=kvetch, config=pent_config())
 
 
 def single_db_context(conn_info):
