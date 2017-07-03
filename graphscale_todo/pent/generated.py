@@ -12,15 +12,18 @@ from graphscale.grapple.graphql_impl import (
     gen_browse_pents_dynamic,
     gen_pent_dynamic,
 )
-from graphscale.pent import Pent, PentMutationData, create_pent, delete_pent, update_pent
+from graphscale.pent import (
+    Pent,
+    PentMutationData,
+    create_pent,
+    delete_pent,
+    update_pent,
+    PentContextfulObject,
+)
 
 from . import pents
 
-class QueryGenerated:
-    @property
-    def context(self):
-        raise Exception('must implement in Root')
-
+class QueryGenerated(PentContextfulObject):
     async def gen_todo_user(self, obj_id):
         return await gen_pent_dynamic(self.context, 'TodoUser', obj_id)
 
@@ -37,11 +40,7 @@ class QueryGenerated:
         return await gen_pent_dynamic(self.context, 'TodoList', obj_id)
 
 
-class MutationGenerated:
-    @property
-    def context(self):
-        raise Exception('must implement in Root')
-
+class MutationGenerated(PentContextfulObject):
     async def gen_create_todo_user(self, data):
         return await gen_create_pent_dynamic(self.context, 'TodoUser', 'CreateTodoUserData', 'CreateTodoUserPayload', data)
 

@@ -2,12 +2,7 @@ from . import generated
 
 
 class Root(generated.QueryGenerated, generated.MutationGenerated):
-    def __init__(self, context):
-        self.__context = context
-
-    @property
-    def context(self):
-        return self.__context
+    pass
 
 
 class TodoUser(generated.TodoUserGenerated):
