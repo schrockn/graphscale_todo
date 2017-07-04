@@ -3,12 +3,10 @@ from uuid import UUID
 import pytest
 
 from context import graphscale_todo
-from graphscale import check
-from graphscale.graphql_client import GraphQLArg, InProcessGraphQLClient
 from graphscale.test.utils import async_test_graphql
-from graphscale_todo.config import in_mem_context
+from graphscale_todo.client import create_todo_mem_client
 from graphscale_todo.graphql_schema import graphql_schema
-from graphscale_todo.pent import (CreateTodoItemData, CreateTodoUserData, Root, TodoItem, TodoUser)
+from graphscale_todo.pent import Root
 
 pytestmark = pytest.mark.asyncio
 
@@ -17,110 +15,6 @@ async def gen_todo_query(query, context, variable_values=None):
     return await async_test_graphql(
         query, context, graphql_schema(), root_value=Root(context), variable_values=variable_values
     )
-
-
-class TodoGraphQLClient:
-    def __init__(self, graphql_client):
-        self.graphql_client = graphql_client
-
-    async def gen_create_todo_user(self, data):
-        check.dict_param(data, 'data')
-        result = await self.graphql_client.gen_mutation(
-            'createTodoUser(data: $data) { todoUser { id name username } }',
-            GraphQLArg(name='data', arg_type='CreateTodoUserData!', value=data)
-        )
-        return result['createTodoUser']['todoUser']
-
-    async def gen_delete_todo_user(self, obj_id):
-        check.uuid_param(obj_id, 'obj_id')
-        result = await self.graphql_client.gen_mutation(
-            'deleteTodoUser(id: $id) { deletedId }',
-            GraphQLArg(name='id', arg_type='UUID!', value=obj_id)
-        )
-        return result['deleteTodoUser']
-
-    async def gen_update_todo_user(self, obj_id, data):
-        check.uuid_param(obj_id, 'obj_id')
-        check.dict_param(data, 'data')
-        result = await self.graphql_client.gen_mutation(
-            'updateTodoUser(id: $id, data: $data) { todoUser { id name username } }',
-            GraphQLArg(name='id', arg_type='UUID!', value=obj_id),
-            GraphQLArg(name='data', arg_type='UpdateTodoUserData!', value=data)
-        )
-        return result['updateTodoUser']['todoUser']
-
-    async def gen_create_todo_list(self, data):
-        check.dict_param(data, 'data')
-        result = await self.graphql_client.gen_mutation(
-            'createTodoList(data: $data) { todoList { id name } } ',
-            GraphQLArg(name='data', arg_type='CreateTodoListData!', value=data)
-        )
-        return result['createTodoList']['todoList']
-
-    async def gen_todo_list(self, obj_id):
-        check.uuid_param(obj_id, 'obj_id')
-        result = await self.graphql_client.gen_query(
-            'todoList(id: $id) { id name owner { id name } }',
-            GraphQLArg(name='id', arg_type='UUID!', value=obj_id),
-        )
-        return result['todoList']
-
-    async def gen_create_todo_item(self, data):
-        check.dict_param(data, 'data')
-        result = await self.graphql_client.gen_mutation(
-            'createTodoItem(data: $data) { todoItem { id text } }',
-            GraphQLArg(name='data', arg_type='CreateTodoItemData!', value=data)
-        )
-        return result['createTodoItem']['todoItem']
-
-    async def gen_todo_user(self, obj_id):
-        check.uuid_param(obj_id, 'obj_id')
-        result = await self.graphql_client.gen_query(
-            'todoUser(id: $id) { id name username }',
-            GraphQLArg(name='id', arg_type='UUID!', value=obj_id)
-        )
-        return result['todoUser']
-
-    async def gen_todo_user_complete_graph(self, obj_id):
-        check.uuid_param(obj_id, 'obj_id')
-        result = await self.graphql_client.gen_query(
-            'todoUser(id: $id) { id name username todoLists { id name } }',
-            GraphQLArg(name='id', arg_type='UUID!', value=obj_id)
-        )
-        return result['todoUser']
-
-    async def gen_all_todo_users(self, first=100, after=None):
-        check.int_param(first, 'first')
-        check.opt_uuid_param(after, 'after')
-        result = await self.graphql_client.gen_query(
-            'allTodoUsers(after: $after, first: $first) { id name username }',
-            GraphQLArg(name='after', arg_type='UUID', value=after),
-            GraphQLArg(name='first', arg_type='Int', value=first)
-        )
-        return result['allTodoUsers']
-
-    async def gen_todo_item(self, obj_id):
-        check.uuid_param(obj_id, 'obj_id')
-        result = await self.graphql_client.gen_query(
-            """
-            todoItem(id: $id) {
-                id
-                text
-                list {
-                    id
-                    name
-                    owner {
-                        id
-                        name
-                    }
-                }
-            }""", GraphQLArg(name='id', arg_type='UUID!', value=obj_id)
-        )
-        return result['todoItem']
-
-
-def create_todo_mem_client():
-    return TodoGraphQLClient(InProcessGraphQLClient(Root(in_mem_context()), graphql_schema()))
 
 
 async def test_create_delete_todo_user():

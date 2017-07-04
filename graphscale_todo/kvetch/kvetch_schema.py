@@ -1,8 +1,8 @@
-from graphscale.kvetch import define_schema, define_object, define_stored_id_edge, define_string_index
+from graphscale.kvetch import Schema, define_string_index
 from .generated import generated_objects, generated_indexes, generated_edges
 
 
-def kvetch_schema():
+def kvetch_schema() -> Schema:
     objects = generated_objects()
     indexes = generated_indexes()
     indexes.append(
@@ -11,4 +11,4 @@ def kvetch_schema():
         )
     )
     edges = generated_edges()
-    return define_schema(objects=objects, indexes=indexes, edges=edges)
+    return Schema(objects=objects, indexes=indexes, edges=edges)
