@@ -1,0 +1,5 @@
+mypy --disallow-untyped-calls --disallow-untyped-defs --ignore-missing-imports \
+  graphscale_todo/*.py \
+  graphscale_todo/pent/*.py \
+  graphscale_todo/kvetch/*.py \
+  graphscale_todo/graphql_schema/*.py
