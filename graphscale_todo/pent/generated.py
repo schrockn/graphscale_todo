@@ -111,7 +111,7 @@ class CreateTodoUserDataGenerated(PentMutationData):
     def __init__(self, *,
         name: str,
         username: str,
-    ):
+    ) -> None:
         data = locals()
         del data['self']
         super().__init__(data)
@@ -127,7 +127,7 @@ class CreateTodoUserDataGenerated(PentMutationData):
 class UpdateTodoUserDataGenerated(PentMutationData):
     def __init__(self, *,
         name: str=None,
-    ):
+    ) -> None:
         data = locals()
         del data['self']
         super().__init__(data)
@@ -140,7 +140,7 @@ class CreateTodoListDataGenerated(PentMutationData):
     def __init__(self, *,
         name: str,
         owner_id: UUID,
-    ):
+    ) -> None:
         data = locals()
         del data['self']
         super().__init__(data)
@@ -157,7 +157,7 @@ class CreateTodoItemDataGenerated(PentMutationData):
     def __init__(self, *,
         text: str,
         list_id: UUID,
-    ):
+    ) -> None:
         data = locals()
         del data['self']
         super().__init__(data)

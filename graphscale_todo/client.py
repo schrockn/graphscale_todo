@@ -6,11 +6,6 @@ from .pent import Root
 from .config import in_mem_context
 from .graphql_schema import graphql_schema
 
-
-def create_todo_mem_client():
-    return TodoGraphQLClient(InProcessGraphQLClient(Root(in_mem_context()), graphql_schema()))
-
-
 Bag = Dict[str, Any]
 
 
@@ -100,3 +95,7 @@ class TodoGraphQLClient:
             }""", GraphQLArg(name='id', arg_type='UUID!', value=obj_id)
         )
         return result['todoItem']
+
+
+def create_todo_mem_client() -> TodoGraphQLClient:
+    return TodoGraphQLClient(InProcessGraphQLClient(Root(in_mem_context()), graphql_schema()))

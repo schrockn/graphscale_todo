@@ -25,6 +25,7 @@
     "**/tags": true,
     "**/.ropeproject": true,
     "**/node_modules": true,
-    "**/.files": true
+    "**/.files": true,
+    "**/.mypy_cache": true
   }
 }
