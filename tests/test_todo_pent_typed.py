@@ -1,7 +1,7 @@
 import pytest
 
 from context import graphscale_todo
-from graphscale_todo.pent import Root, CreateTodoUserData
+from graphscale_todo.pent.autopents import Root, CreateTodoUserData
 from graphscale_todo.config import in_mem_context
 
 pytestmark = pytest.mark.asyncio

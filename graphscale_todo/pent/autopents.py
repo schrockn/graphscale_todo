@@ -25,9 +25,9 @@ from graphscale.pent import (
     PentContextfulObject,
 )
 
-from . import pents
 
-class QueryGenerated(PentContextfulObject):
+
+class Root(PentContextfulObject):
     async def gen_todo_user(self, obj_id: UUID) -> Pent:
         return await gen_pent_dynamic(self.context, 'TodoUser', obj_id)
 
@@ -43,8 +43,6 @@ class QueryGenerated(PentContextfulObject):
     async def gen_todo_list(self, obj_id: UUID) -> Pent:
         return await gen_pent_dynamic(self.context, 'TodoList', obj_id)
 
-
-class MutationGenerated(PentContextfulObject):
     async def gen_create_todo_user(self, data: PentMutationData) -> PentMutationPayload:
         return await gen_create_pent_dynamic(self.context, 'TodoUser', 'CreateTodoUserData', 'CreateTodoUserPayload', data)
 
@@ -64,7 +62,7 @@ class MutationGenerated(PentContextfulObject):
         return await gen_delete_pent_dynamic(self.context, 'TodoItem', 'DeleteTodoItemPayload', obj_id)
 
 
-class TodoUserGenerated(Pent):
+class TodoUser(Pent):
     @property
     def obj_id(self) -> UUID:
         return self._data['obj_id'] # type: ignore
@@ -80,7 +78,7 @@ class TodoUserGenerated(Pent):
     async def gen_todo_lists(self, first: int, after: UUID=None) -> List[Pent]:
         return await self.gen_associated_pents_dynamic('TodoList', 'user_to_list_edge', after, first) # type: ignore
 
-class TodoListGenerated(Pent):
+class TodoList(Pent):
     @property
     def obj_id(self) -> UUID:
         return self._data['obj_id'] # type: ignore
@@ -95,7 +93,7 @@ class TodoListGenerated(Pent):
     async def gen_todo_items(self, first: int, after: UUID=None) -> List[Pent]:
         return await self.gen_associated_pents_dynamic('TodoItem', 'list_to_item_edge', after, first) # type: ignore
 
-class TodoItemGenerated(Pent):
+class TodoItem(Pent):
     @property
     def obj_id(self) -> UUID:
         return self._data['obj_id'] # type: ignore
@@ -107,7 +105,7 @@ class TodoItemGenerated(Pent):
     async def gen_list(self) -> Pent:
         return await self.gen_from_stored_id_dynamic('TodoList', 'list_id')
 
-class CreateTodoUserDataGenerated(PentMutationData):
+class CreateTodoUserData(PentMutationData):
     def __init__(self, *,
         name: str,
         username: str,
@@ -124,7 +122,7 @@ class CreateTodoUserDataGenerated(PentMutationData):
     def username(self) -> str:
         return self._data['username'] # type: ignore
 
-class UpdateTodoUserDataGenerated(PentMutationData):
+class UpdateTodoUserData(PentMutationData):
     def __init__(self, *,
         name: str=None,
     ) -> None:
@@ -136,7 +134,7 @@ class UpdateTodoUserDataGenerated(PentMutationData):
     def name(self) -> str:
         return self._data.get('name') # type: ignore
 
-class CreateTodoListDataGenerated(PentMutationData):
+class CreateTodoListData(PentMutationData):
     def __init__(self, *,
         name: str,
         owner_id: UUID,
@@ -153,7 +151,7 @@ class CreateTodoListDataGenerated(PentMutationData):
     def owner_id(self) -> UUID:
         return self._data['owner_id'] # type: ignore
 
-class CreateTodoItemDataGenerated(PentMutationData):
+class CreateTodoItemData(PentMutationData):
     def __init__(self, *,
         text: str,
         list_id: UUID,
@@ -172,19 +170,60 @@ class CreateTodoItemDataGenerated(PentMutationData):
 
 
 
-CreateTodoUserPayloadDataMixin = namedtuple('CreateTodoUserPayloadDataMixin', 'todo_user')
+__CreateTodoUserPayloadDataMixin = namedtuple('__CreateTodoUserPayloadDataMixin', 'todo_user')
 
 
-UpdateTodoUserPayloadDataMixin = namedtuple('UpdateTodoUserPayloadDataMixin', 'todo_user')
+class CreateTodoUserPayload(PentMutationPayload, __CreateTodoUserPayloadDataMixin):
+    pass
 
 
-DeleteTodoUserPayloadDataMixin = namedtuple('DeleteTodoUserPayloadDataMixin', 'deleted_id')
+__UpdateTodoUserPayloadDataMixin = namedtuple('__UpdateTodoUserPayloadDataMixin', 'todo_user')
 
 
-CreateTodoListPayloadDataMixin = namedtuple('CreateTodoListPayloadDataMixin', 'todo_list')
+class UpdateTodoUserPayload(PentMutationPayload, __UpdateTodoUserPayloadDataMixin):
+    pass
 
 
-CreateTodoItemPayloadDataMixin = namedtuple('CreateTodoItemPayloadDataMixin', 'todo_item')
+__DeleteTodoUserPayloadDataMixin = namedtuple('__DeleteTodoUserPayloadDataMixin', 'deleted_id')
 
 
-DeleteTodoItemPayloadDataMixin = namedtuple('DeleteTodoItemPayloadDataMixin', 'deleted_id')
+class DeleteTodoUserPayload(PentMutationPayload, __DeleteTodoUserPayloadDataMixin):
+    pass
+
+
+__CreateTodoListPayloadDataMixin = namedtuple('__CreateTodoListPayloadDataMixin', 'todo_list')
+
+
+class CreateTodoListPayload(PentMutationPayload, __CreateTodoListPayloadDataMixin):
+    pass
+
+
+__CreateTodoItemPayloadDataMixin = namedtuple('__CreateTodoItemPayloadDataMixin', 'todo_item')
+
+
+class CreateTodoItemPayload(PentMutationPayload, __CreateTodoItemPayloadDataMixin):
+    pass
+
+
+__DeleteTodoItemPayloadDataMixin = namedtuple('__DeleteTodoItemPayloadDataMixin', 'deleted_id')
+
+
+class DeleteTodoItemPayload(PentMutationPayload, __DeleteTodoItemPayloadDataMixin):
+    pass
+
+__all__ = [
+    'Root',
+    'TodoUser',
+    'TodoList',
+    'TodoItem',
+    'CreateTodoUserData',
+    'UpdateTodoUserData',
+    'CreateTodoListData',
+    'CreateTodoItemData',
+    'CreateTodoUserPayload',
+    'UpdateTodoUserPayload',
+    'DeleteTodoUserPayload',
+    'CreateTodoListPayload',
+    'CreateTodoItemPayload',
+    'DeleteTodoItemPayload',
+]

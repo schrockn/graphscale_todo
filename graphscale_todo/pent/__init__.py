@@ -1,2 +1,1 @@
-from .pents import *
-from .mutations import *
+from .autopents import *
