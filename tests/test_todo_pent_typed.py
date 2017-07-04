@@ -12,3 +12,4 @@ async def test_gen_user() -> None:
     payload = await root.gen_create_todo_user(
         CreateTodoUserData(name='John Doe', username='johndoe')
     )
+    assert payload.todo_user.name == 'John Doe'

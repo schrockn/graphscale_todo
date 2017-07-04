@@ -32,13 +32,13 @@ class QueryGenerated(PentContextfulObject):
         return await gen_pent_dynamic(self.context, 'TodoUser', obj_id)
 
     async def gen_all_todo_users(self, first: int, after: UUID=None) -> List[Pent]:
-        return await gen_browse_pents_dynamic(self.context, after, first, 'TodoUser')
+        return await gen_browse_pents_dynamic(self.context, after, first, 'TodoUser') # type: ignore
 
     async def gen_todo_item(self, obj_id: UUID) -> Pent:
         return await gen_pent_dynamic(self.context, 'TodoItem', obj_id)
 
     async def gen_all_todo_items(self, first: int, after: UUID=None) -> List[Pent]:
-        return await gen_browse_pents_dynamic(self.context, after, first, 'TodoItem')
+        return await gen_browse_pents_dynamic(self.context, after, first, 'TodoItem') # type: ignore
 
     async def gen_todo_list(self, obj_id: UUID) -> Pent:
         return await gen_pent_dynamic(self.context, 'TodoList', obj_id)
@@ -67,42 +67,42 @@ class MutationGenerated(PentContextfulObject):
 class TodoUserGenerated(Pent):
     @property
     def obj_id(self) -> UUID:
-        return self._data['obj_id']
+        return self._data['obj_id'] # type: ignore
 
     @property
     def name(self) -> str:
-        return self._data['name']
+        return self._data['name'] # type: ignore
 
     @property
     def username(self) -> str:
-        return self._data['username']
+        return self._data['username'] # type: ignore
 
     async def gen_todo_lists(self, first: int, after: UUID=None) -> List[Pent]:
-        return await self.gen_associated_pents_dynamic('TodoList', 'user_to_list_edge', after, first)
+        return await self.gen_associated_pents_dynamic('TodoList', 'user_to_list_edge', after, first) # type: ignore
 
 class TodoListGenerated(Pent):
     @property
     def obj_id(self) -> UUID:
-        return self._data['obj_id']
+        return self._data['obj_id'] # type: ignore
 
     @property
     def name(self) -> str:
-        return self._data['name']
+        return self._data['name'] # type: ignore
 
     async def gen_owner(self) -> Pent:
         return await self.gen_from_stored_id_dynamic('TodoUser', 'owner_id')
 
     async def gen_todo_items(self, first: int, after: UUID=None) -> List[Pent]:
-        return await self.gen_associated_pents_dynamic('TodoItem', 'list_to_item_edge', after, first)
+        return await self.gen_associated_pents_dynamic('TodoItem', 'list_to_item_edge', after, first) # type: ignore
 
 class TodoItemGenerated(Pent):
     @property
     def obj_id(self) -> UUID:
-        return self._data['obj_id']
+        return self._data['obj_id'] # type: ignore
 
     @property
     def text(self) -> str:
-        return self._data['text']
+        return self._data['text'] # type: ignore
 
     async def gen_list(self) -> Pent:
         return await self.gen_from_stored_id_dynamic('TodoList', 'list_id')
@@ -118,11 +118,11 @@ class CreateTodoUserDataGenerated(PentMutationData):
 
     @property
     def name(self) -> str:
-        return self._data['name']
+        return self._data['name'] # type: ignore
 
     @property
     def username(self) -> str:
-        return self._data['username']
+        return self._data['username'] # type: ignore
 
 class UpdateTodoUserDataGenerated(PentMutationData):
     def __init__(self, *,
@@ -134,7 +134,7 @@ class UpdateTodoUserDataGenerated(PentMutationData):
 
     @property
     def name(self) -> str:
-        return self._data.get('name')
+        return self._data.get('name') # type: ignore
 
 class CreateTodoListDataGenerated(PentMutationData):
     def __init__(self, *,
@@ -147,11 +147,11 @@ class CreateTodoListDataGenerated(PentMutationData):
 
     @property
     def name(self) -> str:
-        return self._data['name']
+        return self._data['name'] # type: ignore
 
     @property
     def owner_id(self) -> UUID:
-        return self._data['owner_id']
+        return self._data['owner_id'] # type: ignore
 
 class CreateTodoItemDataGenerated(PentMutationData):
     def __init__(self, *,
@@ -164,11 +164,11 @@ class CreateTodoItemDataGenerated(PentMutationData):
 
     @property
     def text(self) -> str:
-        return self._data['text']
+        return self._data['text'] # type: ignore
 
     @property
     def list_id(self) -> UUID:
-        return self._data['list_id']
+        return self._data['list_id'] # type: ignore
 
 
 

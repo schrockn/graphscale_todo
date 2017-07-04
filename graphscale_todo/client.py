@@ -5,6 +5,7 @@ from graphscale.graphql_client import GraphQLArg, InProcessGraphQLClient
 from .pent import Root
 from .config import in_mem_context
 from .graphql_schema import graphql_schema
+from typing import cast
 
 Bag = Dict[str, Any]
 
@@ -18,14 +19,14 @@ class TodoGraphQLClient:
             'createTodoUser(data: $data) { todoUser { id name username } }',
             GraphQLArg(name='data', arg_type='CreateTodoUserData!', value=data)
         )
-        return result['createTodoUser']['todoUser']
+        return cast(Bag, result['createTodoUser']['todoUser'])
 
     async def gen_delete_todo_user(self, obj_id: UUID) -> Bag:
         result = await self.graphql_client.gen_mutation(
             'deleteTodoUser(id: $id) { deletedId }',
             GraphQLArg(name='id', arg_type='UUID!', value=obj_id)
         )
-        return result['deleteTodoUser']
+        return cast(Bag, result['deleteTodoUser'])
 
     async def gen_update_todo_user(self, obj_id: UUID, data: Bag) -> Bag:
         result = await self.graphql_client.gen_mutation(
@@ -33,42 +34,42 @@ class TodoGraphQLClient:
             GraphQLArg(name='id', arg_type='UUID!', value=obj_id),
             GraphQLArg(name='data', arg_type='UpdateTodoUserData!', value=data)
         )
-        return result['updateTodoUser']['todoUser']
+        return cast(Bag, result['updateTodoUser']['todoUser'])
 
     async def gen_create_todo_list(self, data: Bag) -> Bag:
         result = await self.graphql_client.gen_mutation(
             'createTodoList(data: $data) { todoList { id name } } ',
             GraphQLArg(name='data', arg_type='CreateTodoListData!', value=data)
         )
-        return result['createTodoList']['todoList']
+        return cast(Bag, result['createTodoList']['todoList'])
 
     async def gen_todo_list(self, obj_id: UUID) -> Bag:
         result = await self.graphql_client.gen_query(
             'todoList(id: $id) { id name owner { id name } }',
             GraphQLArg(name='id', arg_type='UUID!', value=obj_id),
         )
-        return result['todoList']
+        return cast(Bag, result['todoList'])
 
     async def gen_create_todo_item(self, data: Bag):
         result = await self.graphql_client.gen_mutation(
             'createTodoItem(data: $data) { todoItem { id text } }',
             GraphQLArg(name='data', arg_type='CreateTodoItemData!', value=data)
         )
-        return result['createTodoItem']['todoItem']
+        return cast(Bag, result['createTodoItem']['todoItem'])
 
     async def gen_todo_user(self, obj_id: UUID) -> Bag:
         result = await self.graphql_client.gen_query(
             'todoUser(id: $id) { id name username }',
             GraphQLArg(name='id', arg_type='UUID!', value=obj_id)
         )
-        return result['todoUser']
+        return cast(Bag, result['todoUser'])
 
     async def gen_todo_user_complete_graph(self, obj_id: UUID) -> Bag:
         result = await self.graphql_client.gen_query(
             'todoUser(id: $id) { id name username todoLists { id name } }',
             GraphQLArg(name='id', arg_type='UUID!', value=obj_id)
         )
-        return result['todoUser']
+        return cast(Bag, result['todoUser'])
 
     async def gen_all_todo_users(self, first: int=100, after: UUID=None) -> Bag:
         result = await self.graphql_client.gen_query(
@@ -76,7 +77,7 @@ class TodoGraphQLClient:
             GraphQLArg(name='after', arg_type='UUID', value=after),
             GraphQLArg(name='first', arg_type='Int', value=first)
         )
-        return result['allTodoUsers']
+        return cast(Bag, result['allTodoUsers'])
 
     async def gen_todo_item(self, obj_id: UUID) -> Bag:
         result = await self.graphql_client.gen_query(
@@ -94,7 +95,7 @@ class TodoGraphQLClient:
                 }
             }""", GraphQLArg(name='id', arg_type='UUID!', value=obj_id)
         )
-        return result['todoItem']
+        return cast(Bag, result['todoItem'])
 
 
 def create_todo_mem_client() -> TodoGraphQLClient:

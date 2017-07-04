@@ -6,6 +6,14 @@
   "python.linting.lintOnTextChange": true,
   "python.linting.pep8Enabled": false,
   "python.linting.mypyEnabled": true,
+  "python.linting.mypyArgs": [
+    "--ignore-missing-imports",
+    "--follow-imports=silent",
+    "--strict",
+    "--no-strict-optional",
+    "--allow-subclassing-any",
+    "--no-warn-unused-ignores"
+  ],
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "python.formatting.provider": "yapf",
