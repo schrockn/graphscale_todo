@@ -28,38 +28,38 @@ from graphscale.pent import (
 
 
 class Root(PentContextfulObject):
-    async def gen_todo_user(self, obj_id: UUID) -> Pent:
-        return await gen_pent_dynamic(self.context, 'TodoUser', obj_id)
+    async def gen_todo_user(self, obj_id: UUID) -> 'TodoUser':
+        return await gen_pent_dynamic(self.context, 'TodoUser', obj_id) # type: ignore
 
-    async def gen_all_todo_users(self, first: int, after: UUID=None) -> List[Pent]:
+    async def gen_all_todo_users(self, first: int, after: UUID=None) -> 'List[TodoUser]':
         return await gen_browse_pents_dynamic(self.context, after, first, 'TodoUser') # type: ignore
 
-    async def gen_todo_item(self, obj_id: UUID) -> Pent:
-        return await gen_pent_dynamic(self.context, 'TodoItem', obj_id)
+    async def gen_todo_item(self, obj_id: UUID) -> 'TodoItem':
+        return await gen_pent_dynamic(self.context, 'TodoItem', obj_id) # type: ignore
 
-    async def gen_all_todo_items(self, first: int, after: UUID=None) -> List[Pent]:
+    async def gen_all_todo_items(self, first: int, after: UUID=None) -> 'List[TodoItem]':
         return await gen_browse_pents_dynamic(self.context, after, first, 'TodoItem') # type: ignore
 
-    async def gen_todo_list(self, obj_id: UUID) -> Pent:
-        return await gen_pent_dynamic(self.context, 'TodoList', obj_id)
+    async def gen_todo_list(self, obj_id: UUID) -> 'TodoList':
+        return await gen_pent_dynamic(self.context, 'TodoList', obj_id) # type: ignore
 
-    async def gen_create_todo_user(self, data: PentMutationData) -> PentMutationPayload:
-        return await gen_create_pent_dynamic(self.context, 'TodoUser', 'CreateTodoUserData', 'CreateTodoUserPayload', data)
+    async def gen_create_todo_user(self, data: 'CreateTodoUserData') -> 'CreateTodoUserPayload':
+        return await gen_create_pent_dynamic(self.context, 'TodoUser', 'CreateTodoUserData', 'CreateTodoUserPayload', data) # type: ignore
 
-    async def gen_update_todo_user(self, obj_id: UUID, data: PentMutationData) -> PentMutationPayload:
-        return await gen_update_pent_dynamic(self.context, obj_id, 'TodoUser', 'UpdateTodoUserData', 'UpdateTodoUserPayload', data)
+    async def gen_update_todo_user(self, obj_id: UUID, data: 'UpdateTodoUserData') -> 'UpdateTodoUserPayload':
+        return await gen_update_pent_dynamic(self.context, obj_id, 'TodoUser', 'UpdateTodoUserData', 'UpdateTodoUserPayload', data) # type: ignore
 
-    async def gen_delete_todo_user(self, obj_id: UUID) -> PentMutationPayload:
-        return await gen_delete_pent_dynamic(self.context, 'TodoUser', 'DeleteTodoUserPayload', obj_id)
+    async def gen_delete_todo_user(self, obj_id: UUID) -> 'DeleteTodoUserPayload':
+        return await gen_delete_pent_dynamic(self.context, 'TodoUser', 'DeleteTodoUserPayload', obj_id) # type: ignore
 
-    async def gen_create_todo_list(self, data: PentMutationData) -> PentMutationPayload:
-        return await gen_create_pent_dynamic(self.context, 'TodoList', 'CreateTodoListData', 'CreateTodoListPayload', data)
+    async def gen_create_todo_list(self, data: 'CreateTodoListData') -> 'CreateTodoListPayload':
+        return await gen_create_pent_dynamic(self.context, 'TodoList', 'CreateTodoListData', 'CreateTodoListPayload', data) # type: ignore
 
-    async def gen_create_todo_item(self, data: PentMutationData) -> PentMutationPayload:
-        return await gen_create_pent_dynamic(self.context, 'TodoItem', 'CreateTodoItemData', 'CreateTodoItemPayload', data)
+    async def gen_create_todo_item(self, data: 'CreateTodoItemData') -> 'CreateTodoItemPayload':
+        return await gen_create_pent_dynamic(self.context, 'TodoItem', 'CreateTodoItemData', 'CreateTodoItemPayload', data) # type: ignore
 
-    async def gen_delete_todo_item(self, obj_id: UUID) -> PentMutationPayload:
-        return await gen_delete_pent_dynamic(self.context, 'TodoItem', 'DeleteTodoItemPayload', obj_id)
+    async def gen_delete_todo_item(self, obj_id: UUID) -> 'DeleteTodoItemPayload':
+        return await gen_delete_pent_dynamic(self.context, 'TodoItem', 'DeleteTodoItemPayload', obj_id) # type: ignore
 
 
 class TodoUser(Pent):
@@ -75,7 +75,7 @@ class TodoUser(Pent):
     def username(self) -> str:
         return self._data['username'] # type: ignore
 
-    async def gen_todo_lists(self, first: int, after: UUID=None) -> List[Pent]:
+    async def gen_todo_lists(self, first: int, after: UUID=None) -> 'List[TodoList]':
         return await self.gen_associated_pents_dynamic('TodoList', 'user_to_list_edge', after, first) # type: ignore
 
 class TodoList(Pent):
@@ -87,10 +87,10 @@ class TodoList(Pent):
     def name(self) -> str:
         return self._data['name'] # type: ignore
 
-    async def gen_owner(self) -> Pent:
-        return await self.gen_from_stored_id_dynamic('TodoUser', 'owner_id')
+    async def gen_owner(self) -> 'TodoUser':
+        return await self.gen_from_stored_id_dynamic('TodoUser', 'owner_id') # type: ignore
 
-    async def gen_todo_items(self, first: int, after: UUID=None) -> List[Pent]:
+    async def gen_todo_items(self, first: int, after: UUID=None) -> 'List[TodoItem]':
         return await self.gen_associated_pents_dynamic('TodoItem', 'list_to_item_edge', after, first) # type: ignore
 
 class TodoItem(Pent):
@@ -102,8 +102,8 @@ class TodoItem(Pent):
     def text(self) -> str:
         return self._data['text'] # type: ignore
 
-    async def gen_list(self) -> Pent:
-        return await self.gen_from_stored_id_dynamic('TodoList', 'list_id')
+    async def gen_list(self) -> 'TodoList':
+        return await self.gen_from_stored_id_dynamic('TodoList', 'list_id') # type: ignore
 
 class CreateTodoUserData(PentMutationData):
     def __init__(self, *,

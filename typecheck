@@ -1,6 +1,6 @@
 mypy  --ignore-missing-imports --strict --no-strict-optional --allow-subclassing-any --no-warn-unused-ignores \
+  tests/test_todo_pent_typed.py \
   graphscale_todo/*.py \
   graphscale_todo/pent/*.py \
   graphscale_todo/kvetch/*.py \
-  graphscale_todo/graphql_schema/*.py \
-  tests/test_todo_pent_typed.py
+  graphscale_todo/graphql_schema/*.py

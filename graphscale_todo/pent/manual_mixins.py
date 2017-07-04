@@ -1,6 +1,10 @@
 from graphscale.pent import Pent
 
 
+class RootManualMixin(Pent):
+    pass
+
+
 class TodoUserManualMixin(Pent):
     pass
 
@@ -11,4 +15,3 @@ class TodoListManualMixin(Pent):
 
 class TodoItemManualMixin(Pent):
     pass
-
