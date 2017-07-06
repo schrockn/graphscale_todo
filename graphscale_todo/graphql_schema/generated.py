@@ -26,10 +26,13 @@ from graphscale.grapple import (
     list_of,
     GraphQLDate,
     GraphQLUUID,
+    GraphQLPythonEnumType,
     define_default_resolver,
     define_default_gen_resolver,
     define_pent_mutation_resolver,
 )
+
+import graphscale_todo.pent as module_pents
 
 GraphQLQuery = GraphQLObjectType(
     name='Query',
@@ -140,6 +143,10 @@ GraphQLTodoItem = GraphQLObjectType(
         'list': GraphQLField(
             type=GraphQLTodoList, # type: ignore
             resolver=define_default_gen_resolver('gen_list'),
+        ),
+        'todoItemStatus': GraphQLField(
+            type=req(GraphQLTodoItemStatus), # type: ignore
+            resolver=define_default_resolver('todo_item_status'),
         ),
     },
 )
@@ -281,5 +288,8 @@ GraphQLCreateTodoItemData = GraphQLInputObjectType(
     fields=lambda: {
         'text': GraphQLInputObjectField(type=req(GraphQLString)),
         'listId': GraphQLInputObjectField(type=req(GraphQLUUID)),
+        'todoItemStatus': GraphQLInputObjectField(type=req(GraphQLTodoItemStatus)),
     },
 )
+
+GraphQLTodoItemStatus = GraphQLPythonEnumType(module_pents.TodoItemStatus)

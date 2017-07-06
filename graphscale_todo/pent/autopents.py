@@ -4,6 +4,7 @@
 #pylint: disable=W0611, C0301, W0613
 
 from collections import namedtuple
+from enum import Enum, auto
 from typing import List
 from uuid import UUID
 
@@ -26,6 +27,10 @@ from graphscale.pent import (
 )
 
 
+
+class TodoItemStatus(Enum):
+    OPEN = 'OPEN'
+    COMPLETED = 'COMPLETED'
 
 class Root(PentContextfulObject):
     async def gen_todo_user(self, obj_id: UUID) -> 'TodoUser':
@@ -105,6 +110,10 @@ class TodoItem(Pent):
     async def gen_list(self) -> 'TodoList':
         return await self.gen_from_stored_id_dynamic('TodoList', 'list_id') # type: ignore
 
+    @property
+    def todo_item_status(self) -> TodoItemStatus:
+        return self._data['todo_item_status'] # type: ignore
+
 class CreateTodoUserData(PentMutationData):
     def __init__(self, *,
         name: str,
@@ -155,6 +164,7 @@ class CreateTodoItemData(PentMutationData):
     def __init__(self, *,
         text: str,
         list_id: UUID,
+        todo_item_status: TodoItemStatus,
     ) -> None:
         data = locals()
         del data['self']
@@ -168,6 +178,9 @@ class CreateTodoItemData(PentMutationData):
     def list_id(self) -> UUID:
         return self._data['list_id'] # type: ignore
 
+    @property
+    def todo_item_status(self) -> TodoItemStatus:
+        return self._data['todo_item_status'] # type: ignore
 
 
 __CreateTodoUserPayloadDataMixin = namedtuple('__CreateTodoUserPayloadDataMixin', 'todo_user')
@@ -226,4 +239,5 @@ __all__ = [
     'CreateTodoListPayload',
     'CreateTodoItemPayload',
     'DeleteTodoItemPayload',
+    'TodoItemStatus',
 ]

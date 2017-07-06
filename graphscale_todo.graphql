@@ -26,10 +26,16 @@ type TodoList @pent(type_id: 100002) {
     @edgeToStoredId(edgeName: "list_to_item_edge", edgeId: 10001, field: "list")
 }
 
+enum TodoItemStatus {
+  OPEN
+  COMPLETED
+}
+
 type TodoItem @pent(type_id: 100001) {
   id: UUID!
   text: String!
   list: TodoList @genFromStoredId
+  todoItemStatus: TodoItemStatus!
 }
 
 type Mutation {
@@ -75,6 +81,7 @@ type CreateTodoListPayload @pentMutationPayload {
 input CreateTodoItemData @pentMutationData {
   text: String!
   listId: UUID!
+  todoItemStatus: TodoItemStatus!
 }
 
 type CreateTodoItemPayload @pentMutationPayload {

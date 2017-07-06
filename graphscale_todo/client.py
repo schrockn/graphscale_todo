@@ -1,11 +1,10 @@
-from typing import Any, Dict
+from typing import Any, Dict, cast
 from uuid import UUID
 
 from graphscale.graphql_client import GraphQLArg, InProcessGraphQLClient
 from .pent import Root
 from .config import in_mem_context
 from .graphql_schema import graphql_schema
-from typing import cast
 
 Bag = Dict[str, Any]
 
@@ -50,9 +49,9 @@ class TodoGraphQLClient:
         )
         return cast(Bag, result['todoList'])
 
-    async def gen_create_todo_item(self, data: Bag):
+    async def gen_create_todo_item(self, data: Bag) -> Bag:
         result = await self.graphql_client.gen_mutation(
-            'createTodoItem(data: $data) { todoItem { id text } }',
+            'createTodoItem(data: $data) { todoItem { id text todoItemStatus } }',
             GraphQLArg(name='data', arg_type='CreateTodoItemData!', value=data)
         )
         return cast(Bag, result['createTodoItem']['todoItem'])
@@ -85,6 +84,7 @@ class TodoGraphQLClient:
             todoItem(id: $id) {
                 id
                 text
+                todoItemStatus
                 list {
                     id
                     name

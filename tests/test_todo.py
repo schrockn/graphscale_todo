@@ -168,7 +168,13 @@ async def test_create_todo_item_graphql():
 
     list_id = UUID(hex=create_list_result['id'])
 
-    create_item_result = await client.gen_create_todo_item({'text': 'Item one', 'listId': list_id})
+    create_item_result = await client.gen_create_todo_item(
+        {
+            'text': 'Item one',
+            'listId': list_id,
+            'todoItemStatus': 'OPEN'
+        }
+    )
 
     item_id = UUID(hex=create_item_result['id'])
 
