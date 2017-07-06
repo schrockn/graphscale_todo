@@ -3,4 +3,5 @@ from . import generated
 
 
 def graphql_schema() -> GraphQLSchema:
-    return GraphQLSchema(query=generated.GraphQLQuery, mutation=generated.GraphQLMutation)
+    mutation = generated.GraphQLMutation if hasattr(generated, 'GraphQLMutation') else None
+    return GraphQLSchema(query=generated.GraphQLQuery, mutation=mutation)
