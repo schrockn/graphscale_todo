@@ -6,7 +6,7 @@ type Query {
   todoList(id: UUID!): TodoList @readPent
 }
 
-type TodoUser @pent(type_id: 100000) {
+type TodoUser @pent(typeId: 100000) {
   id: UUID!
   name: String!
   username: String!
@@ -18,7 +18,7 @@ type TodoUser @pent(type_id: 100000) {
     )
 }
 
-type TodoList @pent(type_id: 100002) {
+type TodoList @pent(typeId: 100002) {
   id: UUID!
   name: String!
   owner: TodoUser @genFromStoredId
@@ -31,7 +31,7 @@ enum TodoItemStatus {
   COMPLETED
 }
 
-type TodoItem @pent(type_id: 100001) {
+type TodoItem @pent(typeId: 100001) {
   id: UUID!
   text: String!
   todoList: TodoList @genFromStoredId
