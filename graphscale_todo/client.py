@@ -85,7 +85,7 @@ class TodoGraphQLClient:
                 id
                 text
                 todoItemStatus
-                list {
+                todoList {
                     id
                     name
                     owner {

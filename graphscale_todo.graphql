@@ -34,7 +34,7 @@ enum TodoItemStatus {
 type TodoItem @pent(type_id: 100001) {
   id: UUID!
   text: String!
-  list: TodoList @genFromStoredId
+  todoList: TodoList @genFromStoredId
   todoItemStatus: TodoItemStatus!
 }
 
@@ -80,7 +80,7 @@ type CreateTodoListPayload @pentMutationPayload {
 
 input CreateTodoItemData @pentMutationData {
   text: String!
-  listId: UUID!
+  todoListId: UUID!
   todoItemStatus: TodoItemStatus!
 }
 

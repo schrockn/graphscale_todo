@@ -3,6 +3,7 @@ from uuid import UUID
 import pytest
 
 from context import graphscale_todo
+from graphscale.pent import PentContext
 from graphscale.test.utils import async_test_graphql
 from graphscale_todo.client import create_todo_mem_client
 from graphscale_todo.graphql_schema import graphql_schema
@@ -11,13 +12,13 @@ from graphscale_todo.pent import Root
 pytestmark = pytest.mark.asyncio
 
 
-async def gen_todo_query(query, context, variable_values=None):
+async def gen_todo_query(query: str, context: PentContext, variable_values: dict=None) -> None:
     return await async_test_graphql(
         query, context, graphql_schema(), root_value=Root(context), variable_values=variable_values
     )
 
 
-async def test_create_delete_todo_user():
+async def test_create_delete_todo_user() -> None:
     client = create_todo_mem_client()
     create_result = await client.gen_create_todo_user({'name': 'Test Name', 'username': 'testname'})
     todo_id = UUID(hex=create_result['id'])
@@ -29,7 +30,7 @@ async def test_create_delete_todo_user():
     assert not get_result
 
 
-async def test_create_update_todo_user():
+async def test_create_update_todo_user() -> None:
     client = create_todo_mem_client()
     create_result = await client.gen_create_todo_user({'name': 'Test Name', 'username': 'testname'})
     todo_id = UUID(hex=create_result['id'])
@@ -45,7 +46,7 @@ async def test_create_update_todo_user():
     assert get_result['username'] == 'testname'
 
 
-async def test_create_todo_user_graphql():
+async def test_create_todo_user_graphql() -> None:
     client = create_todo_mem_client()
     create_result = await client.gen_create_todo_user({'name': 'Test Name', 'username': 'testname'})
 
@@ -58,12 +59,12 @@ async def test_create_todo_user_graphql():
     assert get_result['username'] == 'testname'
 
 
-def get_objs_by_id(objs):
+def get_objs_by_id(objs: list) -> dict:
     uuids = [UUID(hex=obj['id']) for obj in objs]
     return dict(zip(uuids, objs))
 
 
-async def test_all_todo_users_graphql():
+async def test_all_todo_users_graphql() -> None:
     client = create_todo_mem_client()
     create_result_one = await client.gen_create_todo_user(
         {
@@ -109,7 +110,7 @@ async def test_all_todo_users_graphql():
     assert list(get_objs_by_id(after_low_first_one_objs).keys())[0] == mid_id
 
 
-async def test_create_user_list_graphql():
+async def test_create_user_list_graphql() -> None:
     client = create_todo_mem_client()
     create_user_result = await client.gen_create_todo_user(
         {
@@ -153,7 +154,7 @@ async def test_create_user_list_graphql():
     assert todo_lists[list_two_id]['name'] == 'List Two'
 
 
-async def test_create_todo_item_graphql():
+async def test_create_todo_item_graphql() -> None:
     client = create_todo_mem_client()
     create_user_result = await client.gen_create_todo_user(
         {
@@ -171,7 +172,7 @@ async def test_create_todo_item_graphql():
     create_item_result = await client.gen_create_todo_item(
         {
             'text': 'Item one',
-            'listId': list_id,
+            'todoListId': list_id,
             'todoItemStatus': 'OPEN'
         }
     )
@@ -181,5 +182,5 @@ async def test_create_todo_item_graphql():
     gen_result = await client.gen_todo_item(item_id)
     assert gen_result['id'] == str(item_id)
     assert gen_result['text'] == 'Item one'
-    assert gen_result['list']['name'] == 'List one'
-    assert gen_result['list']['owner']['name'] == 'User one'
+    assert gen_result['todoList']['name'] == 'List one'
+    assert gen_result['todoList']['owner']['name'] == 'User one'

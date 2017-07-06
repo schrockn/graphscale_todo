@@ -1,4 +1,3 @@
-from enum import Enum, auto
 from graphscale.pent import Pent
 
 

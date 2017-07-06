@@ -140,9 +140,9 @@ GraphQLTodoItem = GraphQLObjectType(
             type=req(GraphQLString), # type: ignore
             resolver=define_default_resolver('text'),
         ),
-        'list': GraphQLField(
+        'todoList': GraphQLField(
             type=GraphQLTodoList, # type: ignore
-            resolver=define_default_gen_resolver('gen_list'),
+            resolver=define_default_gen_resolver('gen_todo_list'),
         ),
         'todoItemStatus': GraphQLField(
             type=req(GraphQLTodoItemStatus), # type: ignore
@@ -287,7 +287,7 @@ GraphQLCreateTodoItemData = GraphQLInputObjectType(
     name='CreateTodoItemData',
     fields=lambda: {
         'text': GraphQLInputObjectField(type=req(GraphQLString)),
-        'listId': GraphQLInputObjectField(type=req(GraphQLUUID)),
+        'todoListId': GraphQLInputObjectField(type=req(GraphQLUUID)),
         'todoItemStatus': GraphQLInputObjectField(type=req(GraphQLTodoItemStatus)),
     },
 )

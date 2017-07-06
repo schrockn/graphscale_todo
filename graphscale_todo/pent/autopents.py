@@ -26,6 +26,7 @@ from graphscale.pent import (
     PentContextfulObject,
 )
 
+from . import manual_mixins
 
 
 class TodoItemStatus(Enum):
@@ -67,7 +68,7 @@ class Root(PentContextfulObject):
         return await gen_delete_pent_dynamic(self.context, 'TodoItem', 'DeleteTodoItemPayload', obj_id) # type: ignore
 
 
-class TodoUser(Pent):
+class TodoUser(manual_mixins.TodoUserManualMixin):
     @property
     def obj_id(self) -> UUID:
         return self._data['obj_id'] # type: ignore
@@ -83,7 +84,7 @@ class TodoUser(Pent):
     async def gen_todo_lists(self, first: int, after: UUID=None) -> 'List[TodoList]':
         return await self.gen_associated_pents_dynamic('TodoList', 'user_to_list_edge', after, first) # type: ignore
 
-class TodoList(Pent):
+class TodoList(manual_mixins.TodoListManualMixin):
     @property
     def obj_id(self) -> UUID:
         return self._data['obj_id'] # type: ignore
@@ -98,7 +99,7 @@ class TodoList(Pent):
     async def gen_todo_items(self, first: int, after: UUID=None) -> 'List[TodoItem]':
         return await self.gen_associated_pents_dynamic('TodoItem', 'list_to_item_edge', after, first) # type: ignore
 
-class TodoItem(Pent):
+class TodoItem(manual_mixins.TodoItemManualMixin):
     @property
     def obj_id(self) -> UUID:
         return self._data['obj_id'] # type: ignore
@@ -107,8 +108,8 @@ class TodoItem(Pent):
     def text(self) -> str:
         return self._data['text'] # type: ignore
 
-    async def gen_list(self) -> 'TodoList':
-        return await self.gen_from_stored_id_dynamic('TodoList', 'list_id') # type: ignore
+    async def gen_todo_list(self) -> 'TodoList':
+        return await self.gen_from_stored_id_dynamic('TodoList', 'todo_list_id') # type: ignore
 
     @property
     def todo_item_status(self) -> TodoItemStatus:
@@ -163,7 +164,7 @@ class CreateTodoListData(PentMutationData):
 class CreateTodoItemData(PentMutationData):
     def __init__(self, *,
         text: str,
-        list_id: UUID,
+        todo_list_id: UUID,
         todo_item_status: TodoItemStatus,
     ) -> None:
         data = locals()
@@ -175,8 +176,8 @@ class CreateTodoItemData(PentMutationData):
         return self._data['text'] # type: ignore
 
     @property
-    def list_id(self) -> UUID:
-        return self._data['list_id'] # type: ignore
+    def todo_list_id(self) -> UUID:
+        return self._data['todo_list_id'] # type: ignore
 
     @property
     def todo_item_status(self) -> TodoItemStatus:
