@@ -263,32 +263,32 @@ GraphQLDeleteTodoItemPayload = GraphQLObjectType(
 GraphQLCreateTodoUserData = GraphQLInputObjectType(
     name='CreateTodoUserData',
     fields=lambda: {
-        'name': GraphQLInputObjectField(type=req(GraphQLString)),
-        'username': GraphQLInputObjectField(type=req(GraphQLString)),
+        'name': GraphQLInputObjectField(type=req(GraphQLString)), # type: ignore
+        'username': GraphQLInputObjectField(type=req(GraphQLString)), # type: ignore
     },
 )
 
 GraphQLUpdateTodoUserData = GraphQLInputObjectType(
     name='UpdateTodoUserData',
     fields=lambda: {
-        'name': GraphQLInputObjectField(type=GraphQLString),
+        'name': GraphQLInputObjectField(type=GraphQLString), # type: ignore
     },
 )
 
 GraphQLCreateTodoListData = GraphQLInputObjectType(
     name='CreateTodoListData',
     fields=lambda: {
-        'name': GraphQLInputObjectField(type=req(GraphQLString)),
-        'ownerId': GraphQLInputObjectField(type=req(GraphQLUUID)),
+        'name': GraphQLInputObjectField(type=req(GraphQLString)), # type: ignore
+        'ownerId': GraphQLInputObjectField(type=req(GraphQLUUID)), # type: ignore
     },
 )
 
 GraphQLCreateTodoItemData = GraphQLInputObjectType(
     name='CreateTodoItemData',
     fields=lambda: {
-        'text': GraphQLInputObjectField(type=req(GraphQLString)),
-        'todoListId': GraphQLInputObjectField(type=req(GraphQLUUID)),
-        'todoItemStatus': GraphQLInputObjectField(type=req(GraphQLTodoItemStatus)),
+        'text': GraphQLInputObjectField(type=req(GraphQLString)), # type: ignore
+        'todoListId': GraphQLInputObjectField(type=req(GraphQLUUID)), # type: ignore
+        'todoItemStatus': GraphQLInputObjectField(type=req(GraphQLTodoItemStatus)), # type: ignore
     },
 )
 

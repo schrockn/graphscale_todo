@@ -5,7 +5,7 @@
 
 from collections import namedtuple
 from enum import Enum, auto
-from typing import List
+from typing import List, Any
 from uuid import UUID
 
 from graphscale import check
@@ -15,6 +15,7 @@ from graphscale.grapple.graphql_impl import (
     gen_update_pent_dynamic,
     gen_browse_pents_dynamic,
     gen_pent_dynamic,
+    typed_or_none,
 )
 from graphscale.pent import (
     Pent,
@@ -26,94 +27,10 @@ from graphscale.pent import (
     PentContextfulObject,
 )
 
-from . import manual_mixins
-
 
 class TodoItemStatus(Enum):
     OPEN = 'OPEN'
     COMPLETED = 'COMPLETED'
-
-class Root(PentContextfulObject):
-    async def gen_todo_user(self, obj_id: UUID) -> 'TodoUser':
-        return await gen_pent_dynamic(self.context, 'TodoUser', obj_id) # type: ignore
-
-    async def gen_all_todo_users(self, first: int, after: UUID=None) -> 'List[TodoUser]':
-        return await gen_browse_pents_dynamic(self.context, after, first, 'TodoUser') # type: ignore
-
-    async def gen_todo_item(self, obj_id: UUID) -> 'TodoItem':
-        return await gen_pent_dynamic(self.context, 'TodoItem', obj_id) # type: ignore
-
-    async def gen_all_todo_items(self, first: int, after: UUID=None) -> 'List[TodoItem]':
-        return await gen_browse_pents_dynamic(self.context, after, first, 'TodoItem') # type: ignore
-
-    async def gen_todo_list(self, obj_id: UUID) -> 'TodoList':
-        return await gen_pent_dynamic(self.context, 'TodoList', obj_id) # type: ignore
-
-    async def gen_create_todo_user(self, data: 'CreateTodoUserData') -> 'CreateTodoUserPayload':
-        return await gen_create_pent_dynamic(self.context, 'TodoUser', 'CreateTodoUserData', 'CreateTodoUserPayload', data) # type: ignore
-
-    async def gen_update_todo_user(self, obj_id: UUID, data: 'UpdateTodoUserData') -> 'UpdateTodoUserPayload':
-        return await gen_update_pent_dynamic(self.context, obj_id, 'TodoUser', 'UpdateTodoUserData', 'UpdateTodoUserPayload', data) # type: ignore
-
-    async def gen_delete_todo_user(self, obj_id: UUID) -> 'DeleteTodoUserPayload':
-        return await gen_delete_pent_dynamic(self.context, 'TodoUser', 'DeleteTodoUserPayload', obj_id) # type: ignore
-
-    async def gen_create_todo_list(self, data: 'CreateTodoListData') -> 'CreateTodoListPayload':
-        return await gen_create_pent_dynamic(self.context, 'TodoList', 'CreateTodoListData', 'CreateTodoListPayload', data) # type: ignore
-
-    async def gen_create_todo_item(self, data: 'CreateTodoItemData') -> 'CreateTodoItemPayload':
-        return await gen_create_pent_dynamic(self.context, 'TodoItem', 'CreateTodoItemData', 'CreateTodoItemPayload', data) # type: ignore
-
-    async def gen_delete_todo_item(self, obj_id: UUID) -> 'DeleteTodoItemPayload':
-        return await gen_delete_pent_dynamic(self.context, 'TodoItem', 'DeleteTodoItemPayload', obj_id) # type: ignore
-
-
-class TodoUser(manual_mixins.TodoUserManualMixin):
-    @property
-    def obj_id(self) -> UUID:
-        return self._data['obj_id'] # type: ignore
-
-    @property
-    def name(self) -> str:
-        return self._data['name'] # type: ignore
-
-    @property
-    def username(self) -> str:
-        return self._data['username'] # type: ignore
-
-    async def gen_todo_lists(self, first: int, after: UUID=None) -> 'List[TodoList]':
-        return await self.gen_associated_pents_dynamic('TodoList', 'user_to_list_edge', after, first) # type: ignore
-
-class TodoList(manual_mixins.TodoListManualMixin):
-    @property
-    def obj_id(self) -> UUID:
-        return self._data['obj_id'] # type: ignore
-
-    @property
-    def name(self) -> str:
-        return self._data['name'] # type: ignore
-
-    async def gen_owner(self) -> 'TodoUser':
-        return await self.gen_from_stored_id_dynamic('TodoUser', 'owner_id') # type: ignore
-
-    async def gen_todo_items(self, first: int, after: UUID=None) -> 'List[TodoItem]':
-        return await self.gen_associated_pents_dynamic('TodoItem', 'list_to_item_edge', after, first) # type: ignore
-
-class TodoItem(manual_mixins.TodoItemManualMixin):
-    @property
-    def obj_id(self) -> UUID:
-        return self._data['obj_id'] # type: ignore
-
-    @property
-    def text(self) -> str:
-        return self._data['text'] # type: ignore
-
-    async def gen_todo_list(self) -> 'TodoList':
-        return await self.gen_from_stored_id_dynamic('TodoList', 'todo_list_id') # type: ignore
-
-    @property
-    def todo_item_status(self) -> TodoItemStatus:
-        return self._data['todo_item_status'] # type: ignore
 
 class CreateTodoUserData(PentMutationData):
     def __init__(self, *,
@@ -126,11 +43,11 @@ class CreateTodoUserData(PentMutationData):
 
     @property
     def name(self) -> str:
-        return self._data['name'] # type: ignore
+        return typed_or_none(self._data['name'], str) # type: ignore
 
     @property
     def username(self) -> str:
-        return self._data['username'] # type: ignore
+        return typed_or_none(self._data['username'], str) # type: ignore
 
 class UpdateTodoUserData(PentMutationData):
     def __init__(self, *,
@@ -142,7 +59,7 @@ class UpdateTodoUserData(PentMutationData):
 
     @property
     def name(self) -> str:
-        return self._data.get('name') # type: ignore
+        return typed_or_none(self._data.get('name'), str) # type: ignore
 
 class CreateTodoListData(PentMutationData):
     def __init__(self, *,
@@ -155,11 +72,11 @@ class CreateTodoListData(PentMutationData):
 
     @property
     def name(self) -> str:
-        return self._data['name'] # type: ignore
+        return typed_or_none(self._data['name'], str) # type: ignore
 
     @property
     def owner_id(self) -> UUID:
-        return self._data['owner_id'] # type: ignore
+        return typed_or_none(self._data['owner_id'], UUID) # type: ignore
 
 class CreateTodoItemData(PentMutationData):
     def __init__(self, *,
@@ -173,14 +90,14 @@ class CreateTodoItemData(PentMutationData):
 
     @property
     def text(self) -> str:
-        return self._data['text'] # type: ignore
+        return typed_or_none(self._data['text'], str) # type: ignore
 
     @property
     def todo_list_id(self) -> UUID:
-        return self._data['todo_list_id'] # type: ignore
+        return typed_or_none(self._data['todo_list_id'], UUID) # type: ignore
 
     @property
-    def todo_item_status(self) -> TodoItemStatus:
+    def todo_item_status(self) -> Any: # mypy circ: TodoItemStatus
         return self._data['todo_item_status'] # type: ignore
 
 
@@ -226,10 +143,6 @@ class DeleteTodoItemPayload(PentMutationPayload, __DeleteTodoItemPayloadDataMixi
     pass
 
 __all__ = [
-    'Root',
-    'TodoUser',
-    'TodoList',
-    'TodoItem',
     'CreateTodoUserData',
     'UpdateTodoUserData',
     'CreateTodoListData',
